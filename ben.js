@@ -918,12 +918,28 @@ bot.command("profile", async (ctx) => {
 });
 
 bot.command("reo", async (ctx) => {
-  const msg =
-    REO_MESSAGES[
-      Math.floor(Math.random() * REO_MESSAGES.length)
-    ];
+  const args = ctx.message.text.split(" ");
 
-  await ctx.reply(msg);
+  if (!args[1])
+    return replyAutoDelete(ctx, "❌ Dùng: /reo @username");
+
+  const target = args[1];
+
+  let count = 0;
+
+  const interval = setInterval(async () => {
+    const random =
+      REO_MESSAGES[Math.floor(Math.random() * REO_MESSAGES.length)];
+
+    await ctx.reply(`${target} ${random}`);
+
+    count++;
+
+    if (count >= 10) {
+      clearInterval(interval);
+    }
+  }, 1000);
 });
+
   bot.launch();
 })();
