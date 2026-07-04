@@ -35,5 +35,14 @@ bot.hears("👑 Admin", (ctx) => {
 
   ctx.reply("Xin chào chủ bot.");
 });
+bot.command("info", (ctx) => {
+  const user = ctx.from;
+
+  ctx.reply(
+    "👤 Tên: " + (user.first_name || "") +
+    "\n🆔 ID: " + user.id +
+    "\n📛 Username: @" + (user.username || "Không có")
+  );
+});
 
 bot.launch();
