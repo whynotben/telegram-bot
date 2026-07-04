@@ -124,15 +124,16 @@ bot.command("mute", async (ctx) => {
   const userId = ctx.message.reply_to_message.from.id;
 
   try {
-  await ctx.restrictChatMember(userId, {
-    permissions: {}
-  });
+    await ctx.restrictChatMember(userId, {
+      permissions: {}
+    });
 
-  ctx.reply("🔇 Đã mute người dùng.");
-} catch (error) {
-  console.log(error);
-  ctx.reply("❌ " + error.message);
-}
+    ctx.reply("🔇 Đã mute người dùng.");
+  } catch (error) {
+    console.log(error);
+    ctx.reply("❌ " + error.message);
+  }
+});
 
 bot.command("unmute", async (ctx) => {
   if (String(ctx.from.id) !== String(ADMIN_ID))
