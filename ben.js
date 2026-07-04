@@ -24,6 +24,7 @@ const REO_MESSAGES = [
 ];
 
 let REO_RUNNING = false;
+let reoIndex = 0;
 
 let LINK_LOCK = false;
 
@@ -940,9 +941,13 @@ bot.command("reo", async (ctx) => {
 
   while (REO_RUNNING) {
     try {
-      const random =
-        REO_MESSAGES[Math.floor(Math.random() * REO_MESSAGES.length)];
+      const random = REO_MESSAGES[reoIndex];
 
+reoIndex++;
+
+if (reoIndex >= REO_MESSAGES.length) {
+  reoIndex = 0;
+}
       await ctx.reply(`${target} ${random}`);
     } catch (e) {
       console.log("REO ERROR:", e.message);
