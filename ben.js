@@ -745,38 +745,6 @@ bot.command("unlocklink", async (ctx) => {
   return replyAutoDelete(ctx, "✅ Đã tắt chặn link.");
 });
 
-bot.on("text", async (ctx, next) => {
-  if (!LINK_LOCK) return next();
-
-  if (isAdmin(ctx.from.id)) return next();
-
-  const text = ctx.message.text || "";
-
-  const regex = /(https?:\/\/|t\.me\/|www\.|\.com|\.net|\.org|\.vn)/i;
-
-  if (regex.test(text)) {
-    try {
-      await ctx.deleteMessage();
-
-      const msg = await ctx.reply(
-        `🚫 ${ctx.from.first_name} gửi link khi đang khóa link.`
-      );
-
-      setTimeout(async () => {
-        try {
-          await ctx.telegram.deleteMessage(
-            ctx.chat.id,
-            msg.message_id
-          );
-        } catch {}
-      }, 10000);
-    } catch {}
-    return;
-  }
-
-  return next();
-});
-
 (async () => {
   try {
     await bot.telegram.deleteWebhook({
@@ -790,5 +758,3 @@ bot.on("text", async (ctx, next) => {
 
   bot.launch();
 })();
-
-bot.launch();
