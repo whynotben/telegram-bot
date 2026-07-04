@@ -680,7 +680,7 @@ bot.command("tagadmins", async (ctx) => {
   let text = "👑 ADMIN BOT\n\n";
 
   for (const id of ADMINS) {
-    text += `• ${id}\n`;
+    text += "- " + id + "\n";
   }
 
   return replyAutoDelete(ctx, text);
