@@ -237,5 +237,22 @@ bot.command("clear", async (ctx) => {
     ctx.reply("❌ Không thể xóa.");
   }
 });
+bot.command("unadmin", async (ctx) => {
+  if (String(ctx.from.id) !== String(process.env.ADMIN_ID))
+    return ctx.reply("❌ Chỉ chủ bot mới dùng được.");
+
+  if (!ctx.message.reply_to_message)
+    return ctx.reply("❌ Reply người cần gỡ quyền.");
+
+  const user = ctx.message.reply_to_message.from;
+
+  const index = ADMINS.indexOf(String(user.id));
+
+  if (index !== -1) {
+    ADMINS.splice(index, 1);
+  }
+
+  ctx.reply(`✅ Đã gỡ quyền admin bot của ${user.first_name}`);
+});
 
 bot.launch();
