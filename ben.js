@@ -597,10 +597,11 @@ bot.command("menu", async (ctx) => {
 /unlock - Mở chat
 /clear - Xóa chat
 
-⚠️ Cảnh cáo
+⚠️ Báo Cáo
 /warn - Cảnh cáo
 /warnings - Xem cảnh cáo
 /resetwarn - Xóa cảnh cáo
+/report
 
 📊 Tiện ích
 /stats
@@ -950,6 +951,33 @@ bot.command("stopreo", async (ctx) => {
   return replyAutoDelete(
     ctx,
     "🛑 Đã dừng reo."
+  );
+});
+
+bot.command("report", async (ctx) => {
+  const text = ctx.message.text
+    .replace("/report", "")
+    .trim();
+
+  if (!text)
+    return replyAutoDelete(
+      ctx,
+      "❌ Dùng: /report nội dung"
+    );
+
+  await ctx.telegram.sendMessage(
+    ADMIN_ID,
+    `🚨 BÁO CÁO MỚI
+
+👤 ${ctx.from.first_name}
+🆔 ${ctx.from.id}
+
+📝 ${text}`
+  );
+
+  return replyAutoDelete(
+    ctx,
+    "✅ Báo cáo đã được gửi tới admin."
   );
 });
 
