@@ -634,14 +634,14 @@ bot.command("stats", async (ctx) => {
   const uptime = Math.floor((Date.now() - START_TIME) / 1000);
 
   return replyAutoDelete(
-  ctx,
-  `📊 THỐNG KÊ BOT
+    ctx,
+    `📊 THỐNG KÊ BOT
 
 👑 Admin bot: ${ADMINS.length}
 💾 UID đã lưu: ${Object.keys(FB_UIDS).length}
 ⚠️ Người bị cảnh cáo: ${Object.keys(WARNS).length}
-⏱️ Uptime: ${uptime}s`
-);
+🕐 Uptime: ${uptime}s`
+  );
 });
 
 bot.command("say", async (ctx) => {
