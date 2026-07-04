@@ -542,11 +542,76 @@ bot.command("menu", async (ctx) => {
 /warnings - Xem cảnh cáo
 /resetwarn - Xóa cảnh cáo
 
+📌 Ghim
+/pin
+/unpin
+
+🖼 Tiện ích
+/avatar
+
+💘 Vui vẻ
+/ship
+
 🎮 Giải trí
 /love - Bói tình yêu
 `;
 
   return replyAutoDelete(ctx, text, 15000);
 });
+bot.command("avatar", async (ctx) => {
+  let userId = ctx.from.id;
 
+  if (ctx.message.reply_to_message)
+    userId = ctx.message.reply_to_message.from.id;
+
+  try {
+    const photos = await ctx.telegram.getUserProfilePhotos(userId);
+
+    if (!photos.total_count)
+      return replyAutoDelete(ctx, "❌ Người dùng không có avatar.");
+
+    const fileId = photos.photos[0][0].file_id;
+
+    await ctx.replyWithPhoto(fileId);
+  } catch {
+    return replyAutoDelete(ctx, "❌ Không lấy được avatar.");
+  }
+});
+bot.command("pin", async (ctx) => {
+  if (!isAdmin(ctx.from.id))
+    return replyAutoDelete(ctx, "❌ Bạn không có quyền.");
+
+  if (!ctx.message.reply_to_message)
+    return replyAutoDelete(ctx, "❌ Reply tin nhắn cần ghim.");
+
+  try {
+    await ctx.pinChatMessage(
+      ctx.message.reply_to_message.message_id
+    );
+
+    return replyAutoDelete(ctx, "📌 Đã ghim tin nhắn.");
+  } catch {
+    return replyAutoDelete(ctx, "❌ Không thể ghim.");
+  }
+});
+bot.command("unpin", async (ctx) => {
+  if (!isAdmin(ctx.from.id))
+    return replyAutoDelete(ctx, "❌ Bạn không có quyền.");
+
+  try {
+    await ctx.unpinAllChatMessages();
+
+    return replyAutoDelete(ctx, "📌 Đã bỏ ghim.");
+  } catch {
+    return replyAutoDelete(ctx, "❌ Không thể bỏ ghim.");
+  }
+});
+bot.command("ship", async (ctx) => {
+  const percent = Math.floor(Math.random() * 101);
+
+  return replyAutoDelete(
+    ctx,
+    `💘 ${ctx.from.first_name} hợp với crush ${percent}%`
+  );
+});
 bot.launch();
