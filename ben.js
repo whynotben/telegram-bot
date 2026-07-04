@@ -272,6 +272,36 @@ bot.command("love", (ctx) => {
 
   ctx.reply(`💘 Tỷ lệ có người yêu của ${ctx.from.first_name}: ${percent}%`);
 });
+bot.command("hug", async (ctx) => {
+  if (!ctx.message.reply_to_message)
+    return replyAutoDelete(ctx, "❌ Reply người cần ôm.");
+
+  return replyAutoDelete(
+    ctx,
+    `🤗 ${ctx.from.first_name} ôm ${ctx.message.reply_to_message.from.first_name}`
+  );
+});
+
+bot.command("slap", async (ctx) => {
+  if (!ctx.message.reply_to_message)
+    return replyAutoDelete(ctx, "❌ Reply người cần tát.");
+
+  return replyAutoDelete(
+    ctx,
+    `👋 ${ctx.from.first_name} tát ${ctx.message.reply_to_message.from.first_name}`
+  );
+});
+
+bot.command("marry", async (ctx) => {
+  if (!ctx.message.reply_to_message)
+    return replyAutoDelete(ctx, "❌ Reply người cần cầu hôn.");
+
+  return replyAutoDelete(
+    ctx,
+    `💍 ${ctx.from.first_name} cầu hôn ${ctx.message.reply_to_message.from.first_name}`
+  );
+});
+
 bot.command("clear", async (ctx) => {
   if (!ADMINS.includes(String(ctx.from.id)))
     return replyAutoDelete(ctx, "❌ Bạn không có quyền.");
@@ -563,6 +593,7 @@ bot.command("menu", async (ctx) => {
 💘 Vui vẻ
 /ship
 /roll
+/hug
 /coinflip
 /gay
 /simp
