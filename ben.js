@@ -7,6 +7,8 @@ const ADMIN_ID = process.env.ADMIN_ID;
 const START_TIME = Date.now();
 let RULES = "📜 Chưa có nội quy.";
 
+let LINK_LOCK = false;
+
 let ADMINS = [];
 
 try {
@@ -679,6 +681,100 @@ bot.command("tagadmins", async (ctx) => {
   }
 
   return replyAutoDelete(ctx, text);
+});
+
+bot.command("lockmedia", async (ctx) => {
+  if (!isAdmin(ctx.from.id))
+    return replyAutoDelete(ctx, "❌ Bạn không có quyền.");
+
+  try {
+    await ctx.telegram.setChatPermissions(ctx.chat.id, {
+      can_send_messages: true,
+      can_send_photos: false,
+      can_send_videos: false,
+      can_send_documents: false,
+      can_send_audios: false,
+      can_send_voice_notes: false,
+      can_send_video_notes: false
+    });
+
+    return replyAutoDelete(ctx, "🖼️ Đã khóa gửi ảnh/video.");
+  } catch {
+    return replyAutoDelete(ctx, "❌ Không thể khóa media.");
+  }
+});
+
+bot.command("unlockmedia", async (ctx) => {
+  if (!isAdmin(ctx.from.id))
+    return replyAutoDelete(ctx, "❌ Bạn không có quyền.");
+
+  try {
+    await ctx.telegram.setChatPermissions(ctx.chat.id, {
+      can_send_messages: true,
+      can_send_audios: true,
+      can_send_documents: true,
+      can_send_photos: true,
+      can_send_videos: true,
+      can_send_video_notes: true,
+      can_send_voice_notes: true,
+      can_send_polls: true,
+      can_send_other_messages: true,
+      can_add_web_page_previews: true
+    });
+
+    return replyAutoDelete(ctx, "✅ Đã mở gửi media.");
+  } catch {
+    return replyAutoDelete(ctx, "❌ Không thể mở media.");
+  }
+});
+
+bot.command("locklink", async (ctx) => {
+  if (!isAdmin(ctx.from.id))
+    return replyAutoDelete(ctx, "❌ Bạn không có quyền.");
+
+  LINK_LOCK = true;
+
+  return replyAutoDelete(ctx, "🔗 Đã bật chặn link.");
+});
+bot.command("unlocklink", async (ctx) => {
+  if (!isAdmin(ctx.from.id))
+    return replyAutoDelete(ctx, "❌ Bạn không có quyền.");
+
+  LINK_LOCK = false;
+
+  return replyAutoDelete(ctx, "✅ Đã tắt chặn link.");
+});
+
+bot.on("text", async (ctx, next) => {
+  if (!LINK_LOCK) return next();
+
+  if (isAdmin(ctx.from.id)) return next();
+
+  const text = ctx.message.text || "";
+
+  const regex = /(https?:\/\/|t\.me\/|www\.|\.com|\.net|\.org|\.vn)/i;
+
+  if (regex.test(text)) {
+    try {
+      await ctx.deleteMessage();
+
+      const msg = await ctx.reply(
+        `🚫 ${ctx.from.first_name} gửi link khi đang khóa link.`
+      );
+
+      setTimeout(async () => {
+        try {
+          await ctx.telegram.deleteMessage(
+            ctx.chat.id,
+            msg.message_id
+          );
+        } catch {}
+      }, 10000);
+    } catch {}
+    return;
+  }
+
+  return next();
 });
 
 bot.launch();
