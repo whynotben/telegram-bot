@@ -568,7 +568,7 @@ bot.command("menu", async (ctx) => {
 /love
 `;
 
-  return replyAutoDelete(ctx, text, 15000);
+  return replyAutoDelete(ctx, text, 120000);
 });
 
 bot.command("avatar", async (ctx) => {
