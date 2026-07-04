@@ -13,7 +13,19 @@ bot.start((ctx) => {
 });
 
 bot.command("id", (ctx) => {
-  ctx.reply(`ID của bạn: ${ctx.from.id}`);
+  let user;
+
+  if (ctx.message.reply_to_message) {
+    user = ctx.message.reply_to_message.from;
+  } else {
+    user = ctx.from;
+  }
+
+  ctx.reply(
+    "🆔 ID: " + user.id +
+    "\n👤 Tên: " + (user.first_name || "Không có") +
+    "\n📛 Username: @" + (user.username || "Không có")
+  );
 });
 
 bot.command("admin", (ctx) => {
