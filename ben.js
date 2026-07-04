@@ -734,15 +734,16 @@ bot.command("locklink", async (ctx) => {
 
   LINK_LOCK = true;
 
-  return replyAutoDelete(ctx, "🔗 Đã bật chặn link.");
+  return replyAutoDelete(ctx, "🔒 Đã bật chặn link.");
 });
+
 bot.command("unlocklink", async (ctx) => {
   if (!isAdmin(ctx.from.id))
     return replyAutoDelete(ctx, "❌ Bạn không có quyền.");
 
   LINK_LOCK = false;
 
-  return replyAutoDelete(ctx, "✅ Đã tắt chặn link.");
+  return replyAutoDelete(ctx, "🔓 Đã tắt chặn link.");
 });
 
 (async () => {
@@ -755,6 +756,43 @@ bot.command("unlocklink", async (ctx) => {
   } catch (e) {
     console.log(e);
   }
+
+bot.on("message", async (ctx, next) => {
+  if (!LINK_LOCK) return next();
+
+  if (isAdmin(ctx.from.id)) return next();
+
+  const text =
+    ctx.message.text ||
+    ctx.message.caption ||
+    "";
+
+  const regex =
+    /(https?:\/\/|www\.|t\.me\/|telegram\.me\/|\.com|\.net|\.org|\.vn)/i;
+
+  if (regex.test(text)) {
+    try {
+      await ctx.deleteMessage();
+
+      const msg = await ctx.reply(
+        `🚫 ${ctx.from.first_name} gửi link khi đang khóa link.`
+      );
+
+      setTimeout(async () => {
+        try {
+          await ctx.telegram.deleteMessage(
+            ctx.chat.id,
+            msg.message_id
+          );
+        } catch {}
+      }, 5000);
+    } catch {}
+
+    return;
+  }
+
+  return next();
+});
 
   bot.launch();
 })();
