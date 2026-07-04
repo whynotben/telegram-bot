@@ -1,14 +1,33 @@
 const { Telegraf, Markup } = require("telegraf");
+const fs = require("fs");
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const ADMIN_ID = process.env.ADMIN_ID;
 
-let ADMINS = [String(ADMIN_ID)];
+let ADMINS = [];
+
+try {
+  ADMINS = JSON.parse(
+    fs.readFileSync("admins.json", "utf8")
+  );
+} catch {
+  ADMINS = [
+    String(ADMIN_ID),
+    "6408918026",
+    "6879658839"
+  ];
+}
+
+function saveAdmins() {
+  fs.writeFileSync(
+    "admins.json",
+    JSON.stringify(ADMINS, null, 2)
+  );
+}
 
 function isAdmin(id) {
   return ADMINS.includes(String(id));
 }
-const fs = require("fs");
 
 let FB_UIDS = {};
 
