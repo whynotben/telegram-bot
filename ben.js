@@ -276,9 +276,14 @@ bot.command("deladmin", (ctx) => {
     return ctx.reply("❌ Không thể xoá chủ bot.");
 
   ADMINS = ADMINS.filter(x => x !== id);
-  saveAdmins();
 
-  ctx.reply("🗑️ Đã xoá admin.");
+try {
+    saveAdmins();
+} catch (e) {
+    console.log(e);
+}
+
+return ctx.reply("🗑️ Đã xoá admin.");
 });
 
 bot.command("admins", async (ctx) => {
