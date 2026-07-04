@@ -777,4 +777,18 @@ bot.on("text", async (ctx, next) => {
   return next();
 });
 
+(async () => {
+  try {
+    await bot.telegram.deleteWebhook({
+      drop_pending_updates: true
+    });
+
+    console.log("Webhook deleted");
+  } catch (e) {
+    console.log(e);
+  }
+
+  bot.launch();
+})();
+
 bot.launch();
