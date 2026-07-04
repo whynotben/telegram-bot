@@ -238,7 +238,7 @@ bot.command("love", (ctx) => {
   ctx.reply(`💘 Tỷ lệ có người yêu của ${ctx.from.first_name}: ${percent}%`);
 });
 bot.command("clear", async (ctx) => {
-  if (String(ctx.from.id) !== String(ADMIN_ID))
+  if (!ADMINS.includes(String(ctx.from.id)))
     return replyAutoDelete(ctx, "❌ Bạn không có quyền.");
 
   const args = ctx.message.text.split(" ");
@@ -277,7 +277,7 @@ bot.command("addadmin", (ctx) => {
 
 ADMINS.push(id);
 
-ctx.reply(`✅ Đã thêm admin:
+return replyAutoDelete(ctx, `✅ Đã thêm admin:
 👤 ${user.first_name}
 🆔 ${id}`);
 
