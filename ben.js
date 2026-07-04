@@ -18,6 +18,8 @@ const REO_MESSAGES = [
   "😡 alo tuất!"
 ];
 
+let REO_RUNNING = false;
+
 let LINK_LOCK = false;
 
 let ADMINS = [];
@@ -925,20 +927,30 @@ bot.command("reo", async (ctx) => {
 
   const target = args[1];
 
-  let count = 0;
+  if (REO_RUNNING)
+    return replyAutoDelete(ctx, "⚠️ Đang reo rồi.");
 
-  const interval = setInterval(async () => {
+  REO_RUNNING = true;
+
+  while (REO_RUNNING) {
     const random =
       REO_MESSAGES[Math.floor(Math.random() * REO_MESSAGES.length)];
 
     await ctx.reply(`${target} ${random}`);
 
-    count++;
+    await new Promise(resolve =>
+      setTimeout(resolve, 1000)
+    );
+  }
+});
 
-    if (count >= 10) {
-      clearInterval(interval);
-    }
-  }, 1000);
+bot.command("stopreo", async (ctx) => {
+  REO_RUNNING = false;
+
+  return replyAutoDelete(
+    ctx,
+    "🛑 Đã dừng reo."
+  );
 });
 
   bot.launch();
