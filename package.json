@@ -1,0 +1,11 @@
+{
+  "name": "telegram-bot",
+  "version": "1.0.0",
+  "main": "ben.js",
+  "scripts": {
+    "start": "node ben.js"
+  },
+  "dependencies": {
+    "telegraf": "^4.16.3"
+  }
+}
