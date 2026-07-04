@@ -8,14 +8,19 @@ const START_TIME = Date.now();
 let RULES = "📜 Chưa có nội quy.";
 
 const REO_MESSAGES = [
-  "📢 sủa đi thằng ngu!",
+  "sủa đi thằng ngu!",
   "🤣 sao hấp hối r e!",
-  "🤪 ớt t kìa!",
-  "😘 câm hận t à gay?",
-  "🤣 thằng vô dụng!",
-  "😑 chat có tí đã mếu",
-  "😎 sủa đi gay?",
-  "😡 alo tuất!"
+  "ớt t kìa!",
+  "câm hận t à gay?",
+  "thằng vô dụng!",
+  "chat có tí đã mếu",
+  "sủa đi gay?",
+  "alo tuất!",
+  "‌mày ngưng là con đĩ mẹ mày chết =))?",
+  "chậm ‌vậy ‌sao ‌cứu ‌được ‌con ‌đĩ ‌mẹ ‌mày ‌nhanh ‌lên ‌đi ‌chứ ‌=))",
+  "nghèo k có nghi lực à =))‌",
+  "thằng bê đê bất lực vì mẹ nó bị đụ tung cái lồn =))",
+  "nghèo k có nghi lực à =))‌",
 ];
 
 let REO_RUNNING = false;
