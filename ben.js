@@ -601,28 +601,28 @@ bot.command("menu", async (ctx) => {
 /warn - Cảnh cáo
 /warnings - Xem cảnh cáo
 /resetwarn - Xóa cảnh cáo
-/report
+/report - Báo Cáo 
 
 📊 Tiện ích
-/stats
-/uptime
-/say
-/rules
-/setrules
-/tagadmins
-/avatar
-/checkbot
-/title
-/profile
+/stats - Xem thống kê bot
+/uptime - Xem thời gian hoạt động của bot
+/say - Bảo bot gửi tin nhắn
+/rules - Xem nội quy nhóm
+/setrules - Cập nhật nội quy nhóm
+/tagadmins - Xem danh sách admin
+/avatar - Xem ảnh đại diện người dùng
+/checkbot - Kiểm tra trạng thái bot
+/title - Đổi danh hiệu cá nhân
+/profile - Xem hồ sơ cá nhân
 
 📌 Ghim Thông Báo
-/pin
-/unpin
+/pin - Ghim Tin Nhắn
+/unpin - Bỏ Ghim Tin Nhắn
 
 💘 Vui vẻ
 /ship
 /roll
-/hug
+/hug 
 /coinflip
 /gay
 /simp
@@ -955,29 +955,44 @@ bot.command("stopreo", async (ctx) => {
 });
 
 bot.command("report", async (ctx) => {
-  const text = ctx.message.text
+  if (!ctx.message.reply_to_message)
+    return replyAutoDelete(
+      ctx,
+      "❌ Reply người cần report."
+    );
+
+  const reason = ctx.message.text
     .replace("/report", "")
     .trim();
 
-  if (!text)
+  if (!reason)
     return replyAutoDelete(
       ctx,
-      "❌ Dùng: /report nội dung"
+      "❌ Dùng: /report lý do"
     );
+
+  const target =
+    ctx.message.reply_to_message.from;
 
   await ctx.telegram.sendMessage(
     ADMIN_ID,
-    `🚨 BÁO CÁO MỚI
+`🚨 REPORT THÀNH VIÊN
 
-👤 ${ctx.from.first_name}
+👤 Người report:
+${ctx.from.first_name}
 🆔 ${ctx.from.id}
 
-📝 ${text}`
+🎯 Người bị report:
+${target.first_name}
+🆔 ${target.id}
+
+📝 Lý do:
+${reason}`
   );
 
   return replyAutoDelete(
     ctx,
-    "✅ Báo cáo đã được gửi tới admin."
+    "✅ Đã gửi report tới admin."
   );
 });
 
