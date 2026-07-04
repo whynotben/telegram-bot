@@ -166,5 +166,26 @@ bot.command("unmute", async (ctx) => {
     ctx.reply("❌ Không thể bỏ mute.");
   }
 });
+const path = require("path");
+
+bot.on("new_chat_members", async (ctx) => {
+  const newMembers = ctx.message.new_chat_members;
+
+  for (const user of newMembers) {
+    await ctx.replyWithPhoto(
+      {
+        source: path.join(__dirname, "vk.JPG")
+      },
+      {
+        caption:
+`🎉 Xin chào ${user.first_name}!
+
+👋 Chào mừng bạn đến với nhóm.
+🆔 ID: ${user.id}
+📛 Username: @${user.username || "Không có"}`
+      }
+    );
+  }
+});
 
 bot.launch();
