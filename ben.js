@@ -306,6 +306,7 @@ bot.command("addadmin", (ctx) => {
     return replyAutoDelete(ctx, "⚠️ Người này đã là admin.");
 
 ADMINS.push(id);
+saveAdmins();
 
 return replyAutoDelete(ctx, `✅ Đã thêm admin:
 👤 ${user.first_name}
@@ -326,6 +327,7 @@ bot.command("deladmin", (ctx) => {
     return replyAutoDelete(ctx, "❌ Không thể xoá chủ bot.");
 
   ADMINS = ADMINS.filter(x => x !== id);
+saveAdmins();
 
 try {
     saveAdmins();
