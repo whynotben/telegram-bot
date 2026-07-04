@@ -207,5 +207,10 @@ bot.hears(/dễ thương/i, async (ctx) => {
   const random = replies[Math.floor(Math.random() * replies.length)];
   await ctx.reply(random);
 });
+bot.command("love", (ctx) => {
+  const percent = Math.floor(Math.random() * 101);
+
+  ctx.reply(`💘 Tỷ lệ có người yêu của ${ctx.from.first_name}: ${percent}%`);
+});
 
 bot.launch();
