@@ -256,11 +256,13 @@ bot.command("addadmin", (ctx) => {
   if (ADMINS.includes(id))
     return ctx.reply("⚠️ Người này đã là admin.");
 
-  ADMINS.push(id);
+ADMINS.push(id);
 
 ctx.reply(`✅ Đã thêm admin:
 👤 ${user.first_name}
 🆔 ${id}`);
+
+});
 
 bot.command("deladmin", (ctx) => {
   if (String(ctx.from.id) !== String(ADMIN_ID))
