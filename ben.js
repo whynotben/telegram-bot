@@ -87,9 +87,9 @@ bot.command("info", async (ctx) => {
 });
 
 bot.command("ban", async (ctx) => {
-  if (String(ctx.from.id) !== String(ADMIN_ID))
+  if (!isAdmin(ctx.from.id))
     return ctx.reply("❌ Bạn không có quyền.");
-
+  
   if (!ctx.message.reply_to_message)
     return ctx.reply("❌ Reply tin nhắn người cần ban.");
 
@@ -104,9 +104,8 @@ bot.command("ban", async (ctx) => {
 });
 
 bot.command("unban", async (ctx) => {
-  if (String(ctx.from.id) !== String(ADMIN_ID))
+  if (!isAdmin(ctx.from.id))
     return ctx.reply("❌ Bạn không có quyền.");
-
   const args = ctx.message.text.split(" ");
 
   if (!args[1])
@@ -121,9 +120,9 @@ bot.command("unban", async (ctx) => {
 });
 
 bot.command("mute", async (ctx) => {
-  if (String(ctx.from.id) !== String(ADMIN_ID))
+  if (!isAdmin(ctx.from.id))
     return ctx.reply("❌ Bạn không có quyền.");
-
+  
   if (!ctx.message.reply_to_message)
     return ctx.reply("❌ Reply tin nhắn người cần mute.");
 
@@ -142,9 +141,9 @@ bot.command("mute", async (ctx) => {
 });
 
 bot.command("unmute", async (ctx) => {
-  if (String(ctx.from.id) !== String(ADMIN_ID))
+  if (!isAdmin(ctx.from.id))
     return ctx.reply("❌ Bạn không có quyền.");
-
+  
   if (!ctx.message.reply_to_message)
     return ctx.reply("❌ Reply tin nhắn người cần unmute.");
 
