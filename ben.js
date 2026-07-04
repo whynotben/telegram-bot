@@ -285,15 +285,15 @@ ctx.reply(`✅ Đã thêm admin:
 
 bot.command("deladmin", (ctx) => {
   if (String(ctx.from.id) !== String(ADMIN_ID))
-    return  await replyAutoDelete("❌ Chỉ chủ bot mới dùng được.");
+    return replyAutoDelete(ctx, "❌ Chỉ chủ bot mới dùng được.");
 
   if (!ctx.message.reply_to_message)
-    return  await replyAutoDelete("❌ Reply admin cần xoá.");
+    return replyAutoDelete(ctx, "❌ Reply admin cần xoá.");
 
   const id = String(ctx.message.reply_to_message.from.id);
 
   if (id === String(ADMIN_ID))
-    return  await replyAutoDelete("❌ Không thể xoá chủ bot.");
+    return replyAutoDelete(ctx, "❌ Không thể xoá chủ bot.");
 
   ADMINS = ADMINS.filter(x => x !== id);
 
@@ -303,7 +303,7 @@ try {
     console.log(e);
 }
 
-return  await replyAutoDelete("🗑️ Đã xoá admin.");
+  return replyAutoDelete(ctx, "🗑️ Đã xoá admin.");
 });
 
 bot.command("admins", async (ctx) => {
@@ -327,14 +327,14 @@ bot.command("lock", async (ctx) => {
             can_send_messages: false
         });
 
-        await replyAutoDelete(ctx, "🔒 Chat đã bị khóa.");
+        return replyAutoDelete(ctx, "🔒 Chat đã bị khóa.");
     } catch (e) {
         console.log(e);
         ctx.reply("❌ Không thể khóa chat.");
     }
 });bot.command("unlock", async (ctx) => {
     if (!isAdmin(ctx.from.id))
-        return await replyAutoDelete(ctx, "❌ Không thể khóa chat.");
+        return replyAutoDelete(ctx, "❌ Không thể khóa chat.");
 
     try {
         await ctx.telegram.setChatPermissions(ctx.chat.id, {
@@ -353,10 +353,10 @@ bot.command("lock", async (ctx) => {
             can_pin_messages: false
         });
 
-       await replyAutoDelete(ctx, "🔒 Chat đã được mở khóa.");
+       return replyAutoDelete(ctx, "🔒 Chat đã được mở khóa.");
     } catch (e) {
         console.log(e);
-         await replyAutoDelete("❌ Không thể mở khóa chat.");
+         return replyAutoDelete(ctx, "❌ Không thể mở khóa chat.");
     }
 });
 
