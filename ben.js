@@ -657,14 +657,24 @@ bot.command("setrules", async (ctx) => {
   if (!isAdmin(ctx.from.id))
     return replyAutoDelete(ctx, "❌ Bạn không có quyền.");
 
-  const text = ctx.message.text.replace("/setrules ", "");
+  const text = ctx.message.text
+    .split(" ")
+    .slice(1)
+    .join(" ")
+    .trim();
 
-  if (!text || text === "/setrules")
-    return replyAutoDelete(ctx, "❌ Dùng: /setrules nội dung");
+  if (!text)
+    return replyAutoDelete(
+      ctx,
+      "❌ Dùng: /setrules nội dung"
+    );
 
   RULES = text;
 
-  return replyAutoDelete(ctx, "✅ Đã cập nhật nội quy.");
+  return replyAutoDelete(
+    ctx,
+    "✅ Đã cập nhật nội quy."
+  );
 });
 
 bot.command("uptime", async (ctx) => {
