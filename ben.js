@@ -4,6 +4,9 @@ const fs = require("fs");
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const ADMIN_ID = process.env.ADMIN_ID;
 
+const START_TIME = Date.now();
+let RULES = "📜 Chưa có nội quy.";
+
 let ADMINS = [];
 
 try {
@@ -542,22 +545,31 @@ bot.command("menu", async (ctx) => {
 /warnings - Xem cảnh cáo
 /resetwarn - Xóa cảnh cáo
 
+📊 Tiện ích
+/stats
+/uptime
+/say
+/rules
+/setrules
+/tagadmins
+/avatar
+
 📌 Ghim
 /pin
 /unpin
 
-🖼 Tiện ích
-/avatar
-
 💘 Vui vẻ
 /ship
-
-🎮 Giải trí
-/love - Bói tình yêu
-`;
+/roll
+/coinflip
+/gay
+/simp
+/cute
+/love
 
   return replyAutoDelete(ctx, text, 15000);
 });
+
 bot.command("avatar", async (ctx) => {
   let userId = ctx.from.id;
 
@@ -577,6 +589,7 @@ bot.command("avatar", async (ctx) => {
     return replyAutoDelete(ctx, "❌ Không lấy được avatar.");
   }
 });
+
 bot.command("pin", async (ctx) => {
   if (!isAdmin(ctx.from.id))
     return replyAutoDelete(ctx, "❌ Bạn không có quyền.");
@@ -594,6 +607,7 @@ bot.command("pin", async (ctx) => {
     return replyAutoDelete(ctx, "❌ Không thể ghim.");
   }
 });
+
 bot.command("unpin", async (ctx) => {
   if (!isAdmin(ctx.from.id))
     return replyAutoDelete(ctx, "❌ Bạn không có quyền.");
@@ -606,6 +620,7 @@ bot.command("unpin", async (ctx) => {
     return replyAutoDelete(ctx, "❌ Không thể bỏ ghim.");
   }
 });
+
 bot.command("ship", async (ctx) => {
   const percent = Math.floor(Math.random() * 101);
 
@@ -614,4 +629,65 @@ bot.command("ship", async (ctx) => {
     `💘 ${ctx.from.first_name} hợp với crush ${percent}%`
   );
 });
+
+bot.command("stats", async (ctx) => {
+  const uptime = Math.floor((Date.now() - START_TIME) / 1000);
+
+  return replyAutoDelete(
+    ctx,
+    `📊 THỐNG KÊ BOT
+
+👑 Admin bot: ${ADMINS.length}
+💾 UID đã lưu: ${Object.keys(FB_UIDS).length}
+⚠️ Người bị cảnh cáo: ${Object.keys(WARNS).length}
+⏱ Uptime: ${uptime}s`
+  );
+});
+
+bot.command("say", async (ctx) => {
+  if (!isAdmin(ctx.from.id))
+    return replyAutoDelete(ctx, "❌ Bạn không có quyền.");
+
+  const text = ctx.message.text.replace("/say ", "");
+
+  if (text === "/say" || !text)
+    return replyAutoDelete(ctx, "❌ Dùng: /say nội dung");
+
+  await ctx.reply(text);
+});
+
+bot.command("rules", async (ctx) => {
+  return replyAutoDelete(ctx, RULES);
+});
+
+bot.command("setrules", async (ctx) => {
+  if (!isAdmin(ctx.from.id))
+    return replyAutoDelete(ctx, "❌ Bạn không có quyền.");
+
+  const text = ctx.message.text.replace("/setrules ", "");
+
+  if (!text || text === "/setrules")
+    return replyAutoDelete(ctx, "❌ Dùng: /setrules nội dung");
+
+  RULES = text;
+
+  return replyAutoDelete(ctx, "✅ Đã cập nhật nội quy.");
+});
+
+bot.command("uptime", async (ctx) => {
+  const sec = Math.floor((Date.now() - START_TIME) / 1000);
+
+  return replyAutoDelete(ctx, `⏱ Uptime: ${sec} giây`);
+});
+
+bot.command("tagadmins", async (ctx) => {
+  let text = "👑 ADMIN BOT\n\n";
+
+  for (const id of ADMINS) {
+    text += `• ${id}\n`;
+  }
+
+  return replyAutoDelete(ctx, text);
+});
+
 bot.launch();
