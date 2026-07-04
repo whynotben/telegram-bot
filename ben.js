@@ -42,7 +42,7 @@ function saveUIDs() {
   );
 }
 
-async function replyAutoDelete(ctx, text, time = 5000) {
+async function replyAutoDelete(ctx, text, time = 30000) {
   const msg = await ctx.reply(text);
 
   try {
