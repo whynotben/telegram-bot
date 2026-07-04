@@ -954,7 +954,7 @@ if (reoIndex >= REO_MESSAGES.length) {
     }
 
     await new Promise(resolve =>
-      setTimeout(resolve, 1500)
+      setTimeout(resolve, 2000)
     );
   }
 });
