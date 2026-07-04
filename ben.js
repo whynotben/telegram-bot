@@ -71,7 +71,7 @@ bot.hears("👑 Admin", (ctx) => {
     return ctx.reply("Bạn không có quyền.");
   }
 
-  ctx.reply("Xin chào chủ bot.");
+  ctx.reply("Bot được dev bởi Nguyen Minh Kha.");
 });
 bot.command("info", async (ctx) => {
   let user;
@@ -125,7 +125,7 @@ bot.command("ban", async (ctx) => {
 
 bot.command("unban", async (ctx) => {
   if (!isAdmin(ctx.from.id))
-    return ctx.reply("❌ Bạn không có quyền.");
+    return replyAutoDelete(ctx, "❌ Bạn không có quyền.");
   const args = ctx.message.text.split(" ");
 
   if (!args[1])
@@ -133,15 +133,15 @@ bot.command("unban", async (ctx) => {
 
   try {
     await ctx.unbanChatMember(args[1]);
-    ctx.reply("✅ Đã bỏ ban.");
+    return replyAutoDelete(ctx, "✅ Đã bỏ ban.");
   } catch {
-    ctx.reply("❌ Không thể bỏ ban.");
+    return replyAutoDelete(ctx, "❌ Không thể bỏ ban.");
   }
 });
 
 bot.command("mute", async (ctx) => {
   if (!isAdmin(ctx.from.id))
-    return ctx.reply("❌ Bạn không có quyền.");
+    return replyAutoDelete(ctx, "❌ Bạn không có quyền.");
   
   if (!ctx.message.reply_to_message)
     return ctx.reply("❌ Reply tin nhắn người cần mute.");
@@ -153,7 +153,7 @@ bot.command("mute", async (ctx) => {
       permissions: {}
     });
 
-    ctx.reply("🔇 Đã mute người dùng.");
+    return replyAutoDelete(ctx, "🔇 Đã mute người dùng.");
   } catch (error) {
     console.log(error);
     ctx.reply("❌ " + error.message);
@@ -162,10 +162,10 @@ bot.command("mute", async (ctx) => {
 
 bot.command("unmute", async (ctx) => {
   if (!isAdmin(ctx.from.id))
-    return ctx.reply("❌ Bạn không có quyền.");
+    return replyAutoDelete(ctx, "❌ Bạn không có quyền.");
   
   if (!ctx.message.reply_to_message)
-    return ctx.reply("❌ Reply tin nhắn người cần unmute.");
+    return replyAutoDelete(ctx, "❌ Reply tin nhắn người cần unmute.");
 
   const userId = ctx.message.reply_to_message.from.id;
 
@@ -186,9 +186,9 @@ bot.command("unmute", async (ctx) => {
       can_pin_messages: false
     });
 
-    ctx.reply("🔊 Đã bỏ mute.");
+    return replyAutoDelete(ctx, "🔊 Đã bỏ mute.");
   } catch {
-    ctx.reply("❌ Không thể bỏ mute.");
+    return replyAutoDelete(ctx, "❌ Không thể bỏ mute.");
   }
 });
 const path = require("path");
@@ -239,13 +239,13 @@ bot.command("love", (ctx) => {
 });
 bot.command("clear", async (ctx) => {
   if (String(ctx.from.id) !== String(ADMIN_ID))
-    return ctx.reply("❌ Bạn không có quyền.");
+    return replyAutoDelete(ctx, "❌ Bạn không có quyền.");
 
   const args = ctx.message.text.split(" ");
   const count = parseInt(args[1]);
 
   if (!count || count < 1)
-    return ctx.reply("❌ Dùng: /clear 10");
+    return replyAutoDelete(ctx, "❌ Dùng: /clear 10");
 
   try {
     const currentId = ctx.message.message_id;
@@ -264,16 +264,16 @@ bot.command("clear", async (ctx) => {
 });
 bot.command("addadmin", (ctx) => {
   if (String(ctx.from.id) !== String(ADMIN_ID))
-    return ctx.reply("❌ Chỉ chủ bot mới dùng được.");
+    return replyAutoDelete(ctx, "❌ Chỉ chủ bot mới dùng được.");
 
   if (!ctx.message.reply_to_message)
-    return ctx.reply("❌ Reply người cần thêm admin.");
+    return replyAutoDelete(ctx, "❌ Reply người cần thêm admin.");
 
   const user = ctx.message.reply_to_message.from;
   const id = String(user.id);
 
   if (ADMINS.includes(id))
-    return ctx.reply("⚠️ Người này đã là admin.");
+    return replyAutoDelete(ctx, "⚠️ Người này đã là admin.");
 
 ADMINS.push(id);
 
