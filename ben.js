@@ -630,18 +630,14 @@ bot.command("ship", async (ctx) => {
   );
 });
 
-bot.command("stats", async (ctx) => {
-  const uptime = Math.floor((Date.now() - START_TIME) / 1000);
+const statsText =
+"📊 THỐNG KÊ BOT\n\n" +
+"👑 Admin bot: " + ADMINS.length + "\n" +
+"💾 UID đã lưu: " + Object.keys(FB_UIDS).length + "\n" +
+"⚠️ Người bị cảnh cáo: " + Object.keys(WARNS).length + "\n" +
+"⏱️ Uptime: " + uptime + "s";
 
-  return replyAutoDelete(
-    ctx,
-    `📊 THỐNG KÊ BOT
-
-👑 Admin bot: ${ADMINS.length}
-💾 UID đã lưu: ${Object.keys(FB_UIDS).length}
-⚠️ Người bị cảnh cáo: ${Object.keys(WARNS).length}
-⏱️ Uptime: ${uptime}s`
-  );
+return replyAutoDelete(ctx, statsText);
 });
 
 bot.command("say", async (ctx) => {
