@@ -640,7 +640,7 @@ bot.command("stats", async (ctx) => {
 👑 Admin bot: ${ADMINS.length}
 💾 UID đã lưu: ${Object.keys(FB_UIDS).length}
 ⚠️ Người bị cảnh cáo: ${Object.keys(WARNS).length}
-🕐 Uptime: ${uptime}s`
+⏱️ Uptime: ${uptime}s`
   );
 });
 
