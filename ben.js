@@ -196,5 +196,16 @@ bot.on("left_chat_member", async (ctx) => {
 😅 Có vẻ họ không chịu nổi độ hài hước ở đây.`
   );
 });
+bot.hears(/dễ thương/i, async (ctx) => {
+  const replies = [
+    "🥺 Tui biết Vân Anh dễ thương mò.",
+    "💖 Chuyện đó ai cũng biết mà.",
+    "✨ Vân Anh dễ thương là sự thật hiển nhiên.",
+    "🥰 Khỏi cần nhắc, ai cũng công nhận."
+  ];
+
+  const random = replies[Math.floor(Math.random() * replies.length)];
+  await ctx.reply(random);
+});
 
 bot.launch();
