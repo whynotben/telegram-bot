@@ -651,7 +651,7 @@ bot.command("pin", async (ctx) => {
       ctx.message.reply_to_message.message_id
     );
 
-    return replyAutoDelete(ctx, "📌 Đã ghim tin nhắn.");
+    return ctx.reply("📌 Đã ghim tin nhắn.");
   } catch {
     return replyAutoDelete(ctx, "❌ Không thể ghim.");
   }
@@ -664,7 +664,7 @@ bot.command("unpin", async (ctx) => {
   try {
     await ctx.unpinAllChatMessages();
 
-    return replyAutoDelete(ctx, "📌 Đã bỏ ghim.");
+    return ctx.reply("📌 Đã bỏ ghim.");
   } catch {
     return replyAutoDelete(ctx, "❌ Không thể bỏ ghim.");
   }
