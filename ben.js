@@ -44,5 +44,34 @@ bot.command("info", (ctx) => {
     "\n📛 Username: @" + (user.username || "Không có")
   );
 });
+bot.command("ban", async (ctx) => {
+  if (String(ctx.from.id) !== String(ADMIN_ID))
+    return ctx.reply("Bạn không có quyền.");
+
+  if (!ctx.message.reply_to_message)
+    return ctx.reply("Reply vào người cần ban.");
+
+  const userId = ctx.message.reply_to_message.from.id;
+
+  await ctx.banChatMember(userId);
+
+  ctx.reply("Đã ban người dùng.");
+});
+
+bot.command("mute", async (ctx) => {
+  if (String(ctx.from.id) !== String(ADMIN_ID))
+    return ctx.reply("Bạn không có quyền.");
+
+  if (!ctx.message.reply_to_message)
+    return ctx.reply("Reply vào người cần mute.");
+
+  const userId = ctx.message.reply_to_message.from.id;
+
+  await ctx.restrictChatMember(userId, {
+    permissions: {}
+  });
+
+  ctx.reply("Đã mute người dùng.");
+});
 
 bot.launch();
