@@ -254,5 +254,23 @@ bot.command("unadmin", async (ctx) => {
 
   ctx.reply(`✅ Đã gỡ quyền admin bot của ${user.first_name}`);
 });
+bot.command("admins", async (ctx) => {
+  if (!isAdmin(ctx.from.id))
+    return ctx.reply("❌ Bạn không có quyền.");
+
+  let text = "👑 DANH SÁCH ADMIN BOT\n\n";
+
+  for (const id of ADMINS) {
+    try {
+      const member = await ctx.telegram.getChatMember(ctx.chat.id, id);
+
+      text += `• ${member.user.first_name} (${id})\n`;
+    } catch {
+      text += `• ${id}\n`;
+    }
+  }
+
+  ctx.reply(text);
+});
 
 bot.launch();
