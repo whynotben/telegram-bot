@@ -187,5 +187,14 @@ bot.on("new_chat_members", async (ctx) => {
     );
   }
 });
+bot.on("left_chat_member", async (ctx) => {
+  const user = ctx.message.left_chat_member;
+
+  await ctx.reply(
+    `🚪 ${user.first_name} đã rời nhóm.
+
+😅 Có vẻ họ không chịu nổi độ hài hước ở đây.`
+  );
+});
 
 bot.launch();
