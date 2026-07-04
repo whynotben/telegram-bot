@@ -257,10 +257,10 @@ bot.command("addadmin", (ctx) => {
     return ctx.reply("⚠️ Người này đã là admin.");
 
   ADMINS.push(id);
-  saveAdmins();
 
-  ctx.reply(`✅ Đã thêm admin:\n👤 ${user.first_name}\n🆔 ${id}`);
-});
+ctx.reply(`✅ Đã thêm admin:
+👤 ${user.first_name}
+🆔 ${id}`);
 
 bot.command("deladmin", (ctx) => {
   if (String(ctx.from.id) !== String(ADMIN_ID))
