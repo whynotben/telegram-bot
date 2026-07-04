@@ -8,6 +8,26 @@ let ADMINS = [String(ADMIN_ID)];
 function isAdmin(id) {
   return ADMINS.includes(String(id));
 }
+function isAdmin(id) {
+  return ADMINS.includes(String(id));
+}
+
+async function replyAutoDelete(ctx, text, time = 5000) {
+  const msg = await ctx.reply(text);
+
+  try {
+    await ctx.deleteMessage();
+  } catch {}
+
+  setTimeout(async () => {
+    try {
+      await ctx.telegram.deleteMessage(
+        ctx.chat.id,
+        msg.message_id
+      );
+    } catch {}
+  }, time);
+}
 
 bot.start((ctx) => {
   ctx.reply(
@@ -265,15 +285,15 @@ ctx.reply(`✅ Đã thêm admin:
 
 bot.command("deladmin", (ctx) => {
   if (String(ctx.from.id) !== String(ADMIN_ID))
-    return ctx.reply("❌ Chỉ chủ bot mới dùng được.");
+    return  await replyAutoDelete("❌ Chỉ chủ bot mới dùng được.");
 
   if (!ctx.message.reply_to_message)
-    return ctx.reply("❌ Reply admin cần xoá.");
+    return  await replyAutoDelete("❌ Reply admin cần xoá.");
 
   const id = String(ctx.message.reply_to_message.from.id);
 
   if (id === String(ADMIN_ID))
-    return ctx.reply("❌ Không thể xoá chủ bot.");
+    return  await replyAutoDelete("❌ Không thể xoá chủ bot.");
 
   ADMINS = ADMINS.filter(x => x !== id);
 
@@ -283,7 +303,7 @@ try {
     console.log(e);
 }
 
-return ctx.reply("🗑️ Đã xoá admin.");
+return  await replyAutoDelete("🗑️ Đã xoá admin.");
 });
 
 bot.command("admins", async (ctx) => {
@@ -307,14 +327,14 @@ bot.command("lock", async (ctx) => {
             can_send_messages: false
         });
 
-        ctx.reply("🔒 Chat đã bị khóa.");
+        await replyAutoDelete(ctx, "🔒 Chat đã bị khóa.");
     } catch (e) {
         console.log(e);
         ctx.reply("❌ Không thể khóa chat.");
     }
 });bot.command("unlock", async (ctx) => {
     if (!isAdmin(ctx.from.id))
-        return ctx.reply("❌ Bạn không có quyền.");
+        return await replyAutoDelete(ctx, "❌ Không thể khóa chat.");
 
     try {
         await ctx.telegram.setChatPermissions(ctx.chat.id, {
@@ -333,10 +353,10 @@ bot.command("lock", async (ctx) => {
             can_pin_messages: false
         });
 
-        ctx.reply("🔓 Chat đã được mở khóa.");
+       await replyAutoDelete(ctx, "🔒 Chat đã được mở khóa.");
     } catch (e) {
         console.log(e);
-        ctx.reply("❌ Không thể mở khóa chat.");
+         await replyAutoDelete("❌ Không thể mở khóa chat.");
     }
 });
 
