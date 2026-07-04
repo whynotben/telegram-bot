@@ -56,7 +56,7 @@ bot.command("id", (ctx) => {
 
 bot.command("admin", (ctx) => {
 if (!isAdmin(ctx.from.id)) {
-    return ctx.reply("Bạn không có quyền.");
+    return replyAutoDelete(ctx, "Bạn không có quyền.");
   }
 
   ctx.reply("Xin chào chủ bot.");
@@ -108,18 +108,18 @@ bot.command("info", async (ctx) => {
 
 bot.command("ban", async (ctx) => {
   if (!isAdmin(ctx.from.id))
-    return ctx.reply("❌ Bạn không có quyền.");
+    return replyAutoDelete(ctx, "❌ Bạn không có quyền.");
   
   if (!ctx.message.reply_to_message)
-    return ctx.reply("❌ Reply tin nhắn người cần ban.");
+    return replyAutoDelete(ctx, "❌ Reply tin nhắn người cần ban.");
 
   const userId = ctx.message.reply_to_message.from.id;
 
   try {
     await ctx.banChatMember(userId);
-    ctx.reply("🚫 Đã ban người dùng.");
+    return replyAutoDelete(ctx, "🚫 Đã ban người dùng.");
   } catch {
-    ctx.reply("❌ Không thể ban.");
+    return replyAutoDelete(ctx, "❌ Không thể ban.");
   }
 });
 
