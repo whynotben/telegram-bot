@@ -956,6 +956,9 @@ bot.command("reo", async (ctx) => {
 
 bot.command("stopreo", async (ctx) => {
   REO_RUNNING = false;
+
+  console.log("STOP REO");
+
   return ctx.reply("🛑 Đã dừng reo.");
 });
 
