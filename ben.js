@@ -673,7 +673,7 @@ bot.command("setrules", async (ctx) => {
 bot.command("uptime", async (ctx) => {
   const sec = Math.floor((Date.now() - START_TIME) / 1000);
 
-  return replyAutoDelete(ctx, `⏱ Uptime: ${sec} giây`);
+  return replyAutoDelete(ctx, "⏱ Uptime: " + sec + " giây");
 });
 
 bot.command("tagadmins", async (ctx) => {
