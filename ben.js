@@ -7,6 +7,17 @@ const ADMIN_ID = process.env.ADMIN_ID;
 const START_TIME = Date.now();
 let RULES = "📜 Chưa có nội quy.";
 
+const REO_MESSAGES = [
+  "📢 sủa đi thằng ngu!",
+  "🤣 sao hấp hối r e!",
+  "🤪 ớt t kìa!",
+  "😘 câm hận t à gay?",
+  "🤣 thằng vô dụng!",
+  "😑 chat có tí đã mếu",
+  "😎 sủa đi gay?",
+  "😡 alo tuất!"
+];
+
 let LINK_LOCK = false;
 
 let ADMINS = [];
@@ -906,5 +917,13 @@ bot.command("profile", async (ctx) => {
   );
 });
 
+bot.command("reo", async (ctx) => {
+  const msg =
+    REO_MESSAGES[
+      Math.floor(Math.random() * REO_MESSAGES.length)
+    ];
+
+  await ctx.reply(msg);
+});
   bot.launch();
 })();
