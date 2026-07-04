@@ -939,24 +939,24 @@ bot.command("reo", async (ctx) => {
   REO_RUNNING = true;
 
   while (REO_RUNNING) {
-    const random =
-      REO_MESSAGES[Math.floor(Math.random() * REO_MESSAGES.length)];
+    try {
+      const random =
+        REO_MESSAGES[Math.floor(Math.random() * REO_MESSAGES.length)];
 
-    await ctx.reply(`${target} ${random}`);
+      await ctx.reply(`${target} ${random}`);
+    } catch (e) {
+      console.log("REO ERROR:", e.message);
+    }
 
     await new Promise(resolve =>
-      setTimeout(resolve, 1000)
+      setTimeout(resolve, 1500)
     );
   }
 });
 
 bot.command("stopreo", async (ctx) => {
   REO_RUNNING = false;
-
-  return replyAutoDelete(
-    ctx,
-    "🛑 Đã dừng reo."
-  );
+  return ctx.reply("🛑 Đã dừng reo.");
 });
 
 bot.command("report", async (ctx) => {
