@@ -512,5 +512,41 @@ bot.command("kick", async (ctx) => {
     );
   }
 });
+bot.command("menu", async (ctx) => {
+  const text = `
+📋 MENU BOT
+
+👤 Người dùng
+/id - Xem ID
+/info - Xem thông tin
+/menu - Hiện menu
+
+👑 Quản trị
+/admin - Kiểm tra quyền admin
+/admins - Danh sách admin
+/addadmin - Thêm admin
+/deladmin - Xóa admin
+
+🛡 Quản lý nhóm
+/mute - Mute thành viên
+/unmute - Bỏ mute
+/ban - Ban thành viên
+/unban - Bỏ ban
+/kick - Kick khỏi nhóm
+/lock - Khóa chat
+/unlock - Mở chat
+/clear - Xóa chat
+
+⚠️ Cảnh cáo
+/warn - Cảnh cáo
+/warnings - Xem cảnh cáo
+/resetwarn - Xóa cảnh cáo
+
+🎮 Giải trí
+/love - Bói tình yêu
+`;
+
+  return replyAutoDelete(ctx, text, 15000);
+});
 
 bot.launch();
