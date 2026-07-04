@@ -626,7 +626,7 @@ bot.command("ship", async (ctx) => {
 
   return replyAutoDelete(
     ctx,
-    `💘 ${ctx.from.first_name} hợp với crush ${percent}%`
+    "💘 " + ctx.from.first_name + " hợp với crush " + percent + "%"
   );
 });
 
