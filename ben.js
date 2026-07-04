@@ -46,6 +46,18 @@ function saveUIDs() {
     JSON.stringify(FB_UIDS, null, 2)
   );
 }
+let TITLES = {};
+
+try {
+  TITLES = JSON.parse(fs.readFileSync("titles.json", "utf8"));
+} catch {}
+
+function saveTitles() {
+  fs.writeFileSync(
+    "titles.json",
+    JSON.stringify(TITLES, null, 2)
+  );
+}
 
 async function replyAutoDelete(ctx, text, time = 30000) {
   const msg = await ctx.reply(text);
@@ -586,7 +598,10 @@ bot.command("menu", async (ctx) => {
 /tagadmins
 /avatar
 /checkbot
-📌 Ghim
+/title
+/profile
+
+📌 Ghim Thông Báo
 /pin
 /unpin
 
@@ -845,6 +860,49 @@ bot.command("checkbot", async (ctx) => {
 📛 Username: @${me.username}
 🆔 ID: ${me.id}
 ✅ Trạng thái: Online`
+  );
+});
+
+bot.command("title", async (ctx) => {
+  const title = ctx.message.text
+    .split(" ")
+    .slice(1)
+    .join(" ")
+    .trim();
+
+  if (!title)
+    return replyAutoDelete(
+      ctx,
+      "❌ Dùng: /title Danh hiệu"
+    );
+
+  TITLES[String(ctx.from.id)] = title;
+
+  saveTitles();
+
+  return replyAutoDelete(
+    ctx,
+    `👑 Đã đặt danh hiệu: ${title}`
+  );
+});
+
+bot.command("profile", async (ctx) => {
+  let user = ctx.from;
+
+  if (ctx.message.reply_to_message)
+    user = ctx.message.reply_to_message.from;
+
+  const title =
+    TITLES[String(user.id)] || "Chưa có";
+
+  return replyAutoDelete(
+    ctx,
+    `👤 ${user.first_name}
+
+🆔 ${user.id}
+📛 @${user.username || "Không có"}
+
+👑 Danh hiệu: ${title}`
   );
 });
 
