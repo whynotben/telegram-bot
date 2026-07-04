@@ -585,7 +585,7 @@ bot.command("menu", async (ctx) => {
 /setrules
 /tagadmins
 /avatar
-
+/checkbot
 📌 Ghim
 /pin
 /unpin
@@ -833,6 +833,19 @@ bot.on("message", async (ctx, next) => {
   }
 
   return next();
+});
+
+bot.command("checkbot", async (ctx) => {
+  const me = await ctx.telegram.getMe();
+
+  return replyAutoDelete(
+    ctx,
+    `🤖 THÔNG TIN BOT
+
+📛 Username: @${me.username}
+🆔 ID: ${me.id}
+✅ Trạng thái: Online`
+  );
 });
 
   bot.launch();
