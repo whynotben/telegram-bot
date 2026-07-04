@@ -3,6 +3,12 @@ const { Telegraf, Markup } = require("telegraf");
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const ADMIN_ID = process.env.ADMIN_ID;
 
+let ADMINS = [String(ADMIN_ID)];
+
+function isAdmin(id) {
+  return ADMINS.includes(String(id));
+}
+
 bot.start((ctx) => {
   ctx.reply(
     "Chào mừng!",
@@ -29,7 +35,7 @@ bot.command("id", (ctx) => {
 });
 
 bot.command("admin", (ctx) => {
-  if (String(ctx.from.id) !== String(ADMIN_ID)) {
+if (!isAdmin(ctx.from.id)) {
     return ctx.reply("Bạn không có quyền.");
   }
 
@@ -41,7 +47,7 @@ bot.hears("📌 ID", (ctx) => {
 });
 
 bot.hears("👑 Admin", (ctx) => {
-  if (String(ctx.from.id) !== String(ADMIN_ID)) {
+  if (!isAdmin(ctx.from.id)) {
     return ctx.reply("Bạn không có quyền.");
   }
 
@@ -237,23 +243,43 @@ bot.command("clear", async (ctx) => {
     ctx.reply("❌ Không thể xóa.");
   }
 });
-bot.command("unadmin", async (ctx) => {
-  if (String(ctx.from.id) !== String(process.env.ADMIN_ID))
+bot.command("addadmin", (ctx) => {
+  if (String(ctx.from.id) !== String(ADMIN_ID))
     return ctx.reply("❌ Chỉ chủ bot mới dùng được.");
 
   if (!ctx.message.reply_to_message)
-    return ctx.reply("❌ Reply người cần gỡ quyền.");
+    return ctx.reply("❌ Reply người cần thêm admin.");
 
   const user = ctx.message.reply_to_message.from;
+  const id = String(user.id);
 
-  const index = ADMINS.indexOf(String(user.id));
+  if (ADMINS.includes(id))
+    return ctx.reply("⚠️ Người này đã là admin.");
 
-  if (index !== -1) {
-    ADMINS.splice(index, 1);
-  }
+  ADMINS.push(id);
+  saveAdmins();
 
-  ctx.reply(`✅ Đã gỡ quyền admin bot của ${user.first_name}`);
+  ctx.reply(`✅ Đã thêm admin:\n👤 ${user.first_name}\n🆔 ${id}`);
 });
+
+bot.command("deladmin", (ctx) => {
+  if (String(ctx.from.id) !== String(ADMIN_ID))
+    return ctx.reply("❌ Chỉ chủ bot mới dùng được.");
+
+  if (!ctx.message.reply_to_message)
+    return ctx.reply("❌ Reply admin cần xoá.");
+
+  const id = String(ctx.message.reply_to_message.from.id);
+
+  if (id === String(ADMIN_ID))
+    return ctx.reply("❌ Không thể xoá chủ bot.");
+
+  ADMINS = ADMINS.filter(x => x !== id);
+  saveAdmins();
+
+  ctx.reply("🗑️ Đã xoá admin.");
+});
+
 bot.command("admins", async (ctx) => {
   if (!isAdmin(ctx.from.id))
     return ctx.reply("❌ Bạn không có quyền.");
@@ -261,13 +287,7 @@ bot.command("admins", async (ctx) => {
   let text = "👑 DANH SÁCH ADMIN BOT\n\n";
 
   for (const id of ADMINS) {
-    try {
-      const member = await ctx.telegram.getChatMember(ctx.chat.id, id);
-
-      text += `• ${member.user.first_name} (${id})\n`;
-    } catch {
-      text += `• ${id}\n`;
-    }
+    text += `• ${id}\n`;
   }
 
   ctx.reply(text);
