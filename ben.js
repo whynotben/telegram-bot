@@ -424,5 +424,93 @@ bot.command("deleteuid", async (ctx) => {
 
   return replyAutoDelete(ctx, "🗑️ Đã xoá UID.");
 });
+const WARNS = {};
+bot.command("warn", async (ctx) => {
+  if (!isAdmin(ctx.from.id))
+    return replyAutoDelete(ctx, "❌ Bạn không có quyền.");
+
+  if (!ctx.message.reply_to_message)
+    return replyAutoDelete(ctx, "❌ Reply người cần cảnh cáo.");
+
+  const user = ctx.message.reply_to_message.from;
+  const id = String(user.id);
+
+  WARNS[id] = (WARNS[id] || 0) + 1;
+
+  if (WARNS[id] >= 3) {
+    try {
+      await ctx.banChatMember(id);
+
+      delete WARNS[id];
+
+      return replyAutoDelete(
+        ctx,
+        `🚫 ${user.first_name} đã bị ban vì đủ 3 cảnh cáo.`
+      );
+    } catch {
+      return replyAutoDelete(ctx, "❌ Không thể ban.");
+    }
+  }
+
+  return replyAutoDelete(
+    ctx,
+    `⚠️ ${user.first_name} hiện có ${WARNS[id]}/3 cảnh cáo.`
+  );
+});
+
+bot.command("warnings", async (ctx) => {
+  let user = ctx.from;
+
+  if (ctx.message.reply_to_message)
+    user = ctx.message.reply_to_message.from;
+
+  const count = WARNS[String(user.id)] || 0;
+
+  return replyAutoDelete(
+    ctx,
+    `⚠️ ${user.first_name}: ${count}/3 cảnh cáo`
+  );
+});
+
+bot.command("resetwarn", async (ctx) => {
+  if (!isAdmin(ctx.from.id))
+    return replyAutoDelete(ctx, "❌ Bạn không có quyền.");
+
+  if (!ctx.message.reply_to_message)
+    return replyAutoDelete(ctx, "❌ Reply người cần xoá cảnh cáo.");
+
+  const id = String(ctx.message.reply_to_message.from.id);
+
+  delete WARNS[id];
+
+  return replyAutoDelete(
+    ctx,
+    "✅ Đã xoá toàn bộ cảnh cáo."
+  );
+});
+bot.command("kick", async (ctx) => {
+  if (!isAdmin(ctx.from.id))
+    return replyAutoDelete(ctx, "❌ Bạn không có quyền.");
+
+  if (!ctx.message.reply_to_message)
+    return replyAutoDelete(ctx, "❌ Reply người cần kick.");
+
+  const userId = ctx.message.reply_to_message.from.id;
+
+  try {
+    await ctx.banChatMember(userId);
+    await ctx.unbanChatMember(userId);
+
+    return replyAutoDelete(
+      ctx,
+      "👢 Đã kick khỏi nhóm."
+    );
+  } catch {
+    return replyAutoDelete(
+      ctx,
+      "❌ Không thể kick."
+    );
+  }
+});
 
 bot.launch();
