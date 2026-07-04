@@ -8,8 +8,19 @@ let ADMINS = [String(ADMIN_ID)];
 function isAdmin(id) {
   return ADMINS.includes(String(id));
 }
-function isAdmin(id) {
-  return ADMINS.includes(String(id));
+const fs = require("fs");
+
+let FB_UIDS = {};
+
+try {
+  FB_UIDS = JSON.parse(fs.readFileSync("uids.json", "utf8"));
+} catch {}
+
+function saveUIDs() {
+  fs.writeFileSync(
+    "uids.json",
+    JSON.stringify(FB_UIDS, null, 2)
+  );
 }
 
 async function replyAutoDelete(ctx, text, time = 5000) {
@@ -358,6 +369,39 @@ bot.command("lock", async (ctx) => {
         console.log(e);
          return replyAutoDelete(ctx, "❌ Không thể mở khóa chat.");
     }
+});
+bot.command("saveuid", async (ctx) => {
+  const args = ctx.message.text.split(" ");
+
+  if (!args[1])
+    return replyAutoDelete(ctx, "❌ Dùng: /saveuid UID");
+
+  FB_UIDS[String(ctx.from.id)] = args[1];
+  saveUIDs();
+
+  return replyAutoDelete(ctx, "✅ Đã lưu UID.");
+});
+bot.command("checkuid", async (ctx) => {
+  let user = ctx.from;
+
+  if (ctx.message.reply_to_message)
+    user = ctx.message.reply_to_message.from;
+
+  const uid = FB_UIDS[String(user.id)];
+
+  if (!uid)
+    return replyAutoDelete(ctx, "❌ Chưa lưu UID.");
+
+  return replyAutoDelete(
+    ctx,
+    `🆔 UID Facebook: ${uid}`
+  );
+});
+bot.command("deleteuid", async (ctx) => {
+  delete FB_UIDS[String(ctx.from.id)];
+  saveUIDs();
+
+  return replyAutoDelete(ctx, "🗑️ Đã xoá UID.");
 });
 
 bot.launch();
