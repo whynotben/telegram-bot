@@ -212,5 +212,30 @@ bot.command("love", (ctx) => {
 
   ctx.reply(`💘 Tỷ lệ có người yêu của ${ctx.from.first_name}: ${percent}%`);
 });
+bot.command("clear", async (ctx) => {
+  if (String(ctx.from.id) !== String(ADMIN_ID))
+    return ctx.reply("❌ Bạn không có quyền.");
+
+  const args = ctx.message.text.split(" ");
+  const count = parseInt(args[1]);
+
+  if (!count || count < 1)
+    return ctx.reply("❌ Dùng: /clear 10");
+
+  try {
+    const currentId = ctx.message.message_id;
+
+    for (let i = 0; i <= count; i++) {
+      try {
+        await ctx.telegram.deleteMessage(
+          ctx.chat.id,
+          currentId - i
+        );
+      } catch {}
+    }
+  } catch {
+    ctx.reply("❌ Không thể xóa.");
+  }
+});
 
 bot.launch();
