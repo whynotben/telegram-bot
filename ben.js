@@ -1055,17 +1055,21 @@ bot.command("benoff", async (ctx) => {
 });
 
 bot.command("genmail", async (ctx) => {
-  const username =
-    Math.random().toString(36).slice(2, 10);
+  try {
+    const username =
+      Math.random().toString(36).slice(2, 10);
 
-  const email = `${username}@1secmail.com`;
+    const email = `${username}@1secmail.com`;
 
-  TEMP_MAILS[ctx.from.id] = email;
-  saveMails();
+    TEMP_MAILS[ctx.from.id] = email;
 
-  return ctx.reply(
-    `📧 Email tạm thời của bạn:\n\n${email}`
-  );
+    saveMails();
+
+    ctx.reply(`📧 ${email}`);
+  } catch (err) {
+    ctx.reply(`❌ Lỗi: ${err.message}`);
+    console.log(err);
+  }
 });
 
 bot.command("mymail", async (ctx) => {
