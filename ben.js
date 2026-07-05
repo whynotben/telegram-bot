@@ -725,6 +725,7 @@ bot.command("menu", async (ctx) => {
 /checkbot - Kiểm tra trạng thái bot
 /title - Đổi danh hiệu cá nhân
 /profile - Xem hồ sơ cá nhân
+/weather - Thời tiết
 
 📌 Ghim Thông Báo
 /pin - Ghim Tin Nhắn
@@ -1329,6 +1330,44 @@ ctx.reply("✅ Đã đổi ảnh nhóm.");
     console.log(e);
     ctx.reply("❌ " + e.stack);
 }
+});
+const axios = require("axios");
+
+bot.command("weather", async (ctx) => {
+    const city = ctx.message.text.replace("/weather", "").trim();
+
+    if (!city) {
+        return ctx.reply("Ví dụ: /weather Hanoi");
+    }
+
+    try {
+        const res = await axios.get(
+            "https://api.openweathermap.org/data/2.5/weather",
+            {
+                params: {
+                    q: city,
+                    appid: process.env.OPENWEATHER_API_KEY,
+                    units: "metric",
+                    lang: "vi"
+                }
+            }
+        );
+
+        const w = res.data;
+
+        await ctx.reply(
+`🌤 Thành phố: ${w.name}
+🌡 Nhiệt độ: ${w.main.temp}°C
+🤔 Cảm giác như: ${w.main.feels_like}°C
+💧 Độ ẩm: ${w.main.humidity}%
+🌬 Gió: ${w.wind.speed} m/s
+📝 Thời tiết: ${w.weather[0].description}`
+        );
+
+    } catch (err) {
+        console.error(err);
+        ctx.reply("❌ Không tìm thấy địa điểm.");
+    }
 });
 
   bot.launch();
