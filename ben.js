@@ -915,6 +915,21 @@ bot.command("unlocklink", async (ctx) => {
   } catch (e) {
     console.log(e);
   }
+bot.use(async (ctx, next) => {
+  if (
+    ctx.chat &&
+    (ctx.chat.type === "group" ||
+     ctx.chat.type === "supergroup")
+  ) {
+    GROUPS[String(ctx.chat.id)] = {
+      title: ctx.chat.title
+    };
+
+    saveGroups();
+  }
+
+  return next();
+});
 
 bot.on("message", async (ctx, next) => {
   if (!LINK_LOCK) return next();
