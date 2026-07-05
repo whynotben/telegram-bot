@@ -1,8 +1,6 @@
 const { Telegraf, Markup } = require("telegraf");
 const fs = require("fs");
 
-const axios = require("axios");
-
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const ADMIN_ID = process.env.ADMIN_ID;
 let TEMP_MAILS = {};
@@ -661,9 +659,6 @@ bot.command("menu", async (ctx) => {
 /checkbot - Kiểm tra trạng thái bot
 /title - Đổi danh hiệu cá nhân
 /profile - Xem hồ sơ cá nhân
-/genmail - Tạo mail ảo
-/mymail - Thư của bạn
-/delmail - Xoá mail
 
 📌 Ghim Thông Báo
 /pin - Ghim Tin Nhắn
@@ -1062,94 +1057,6 @@ bot.command("benoff", async (ctx) => {
 
   BOT_ENABLED = false;
   ctx.reply("🔴 Bot đã tắt.");
-});
-
-bot.command("genmail", async (ctx) => {
-  const userId = String(ctx.from.id);
-
-  const username =
-    Math.random().toString(36).slice(2, 10);
-
-  const email = `${username}@1secmail.com`;
-
-  if (!TEMP_MAILS[userId]) {
-    TEMP_MAILS[userId] = [];
-  }
-
-  TEMP_MAILS[userId].push(email);
-
-  saveMails();
-
-  ctx.reply(
-    `📧 Đã tạo mail mới:\n\n${email}`
-  );
-});
-
-bot.command("mymail", async (ctx) => {
-  const userId = String(ctx.from.id);
-
-  const mails = TEMP_MAILS[userId];
-
-  if (!mails || mails.length === 0)
-    return ctx.reply("❌ Bạn chưa có mail.");
-
-  let text = "📧 Danh sách mail:\n\n";
-
-  mails.forEach((mail, index) => {
-    text += `${index + 1}. ${mail}\n`;
-  });
-
-  ctx.reply(text);
-});
-
-bot.command("testmail", async (ctx) => {
-  ctx.reply("Mail OK");
-});
-
-bot.command("delmail", async (ctx) => {
-  const userId = String(ctx.from.id);
-
-  const args = ctx.message.text.split(" ");
-
-  const index = parseInt(args[1]);
-
-  if (isNaN(index))
-    return ctx.reply(
-      "❌ Dùng: /delmail <số thứ tự>"
-    );
-
-  const mails = TEMP_MAILS[userId];
-
-  if (!mails || !mails[index - 1])
-    return ctx.reply(
-      "❌ Không tìm thấy mail."
-    );
-
-  const deleted = mails.splice(index - 1, 1)[0];
-
-  saveMails();
-
-  ctx.reply(
-    `🗑️ Đã xóa:\n${deleted}`
-  );
-});
-
-bot.command("testdomain", async (ctx) => {
-  try {
-    const res = await axios.get(
-      "https://api.mail.tm/domains"
-    );
-
-    ctx.reply(
-      JSON.stringify(
-        res.data["hydra:member"][0],
-        null,
-        2
-      )
-    );
-  } catch (err) {
-    ctx.reply(`❌ ${err.message}`);
-  }
 });
 
   bot.launch();
