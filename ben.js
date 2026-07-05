@@ -84,6 +84,22 @@ function saveAdmins() {
     JSON.stringify(ADMINS, null, 2)
   );
 }
+let GROUPS = {};
+
+try {
+  GROUPS = JSON.parse(
+    fs.readFileSync("groups.json", "utf8")
+  );
+} catch {
+  GROUPS = {};
+}
+
+function saveGroups() {
+  fs.writeFileSync(
+    "groups.json",
+    JSON.stringify(GROUPS, null, 2)
+  );
+}
 
 function isAdmin(id) {
   return ADMINS.includes(String(id));
