@@ -1134,5 +1134,23 @@ bot.command("delmail", async (ctx) => {
   );
 });
 
+bot.command("testdomain", async (ctx) => {
+  try {
+    const res = await axios.get(
+      "https://api.mail.tm/domains"
+    );
+
+    ctx.reply(
+      JSON.stringify(
+        res.data["hydra:member"][0],
+        null,
+        2
+      )
+    );
+  } catch (err) {
+    ctx.reply(`❌ ${err.message}`);
+  }
+});
+
   bot.launch();
 })();
