@@ -725,7 +725,7 @@ bot.command("menu", async (ctx) => {
 /checkbot - Kiểm tra trạng thái bot
 /title - Đổi danh hiệu cá nhân
 /profile - Xem hồ sơ cá nhân
-/weather - Thời tiết
+/weather
 
 📌 Ghim Thông Báo
 /pin - Ghim Tin Nhắn
