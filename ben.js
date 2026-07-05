@@ -1210,16 +1210,15 @@ bot.command("setavtbox", async (ctx) => {
     const photo =
       ctx.message.reply_to_message.photo.pop();
 
-    const file = await ctx.telegram.getFile(
-      photo.file_id
-    );
+    const photo =
+  ctx.message.reply_to_message.photo.pop();
 
-    await ctx.telegram.setChatPhoto(
-      ctx.chat.id,
-      {
-        url: `https://api.telegram.org/file/bot${BOT_TOKEN}/${file.file_path}`
-      }
-    );
+await ctx.telegram.setChatPhoto(
+  ctx.chat.id,
+  photo.file_id
+);
+
+ctx.reply("✅ Đã đổi ảnh nhóm.");
 
     ctx.reply("✅ Đã đổi ảnh nhóm.");
   } catch (e) {
