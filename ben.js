@@ -146,6 +146,20 @@ async function replyAutoDelete(ctx, text, time = 30000) {
     } catch {}
   }, time);
 }
+bot.on("message", async (ctx, next) => {
+  if (
+    ctx.chat.type === "group" ||
+    ctx.chat.type === "supergroup"
+  ) {
+    GROUPS[ctx.chat.id] = {
+      title: ctx.chat.title
+    };
+
+    saveGroups();
+  }
+
+  return next();
+});
 
 bot.command("menukb", (ctx) => {
   ctx.reply(
