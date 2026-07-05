@@ -1,7 +1,4 @@
 const { Telegraf, Markup, Input } = require("telegraf");
-const fs = require("fs");
-const https = require("https");
-const path = require("path");
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const ADMIN_ID = process.env.ADMIN_ID;
 let TEMP_MAILS = {};
