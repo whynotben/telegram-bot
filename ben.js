@@ -3,6 +3,7 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 const ADMIN_ID = process.env.ADMIN_ID;
 const fs = require("fs");
 const path = require("path");
+const OpenAI = require("openai");
 let TEMP_MAILS = {};
 
 try {
