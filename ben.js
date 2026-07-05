@@ -3,10 +3,10 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 const ADMIN_ID = process.env.ADMIN_ID;
 const fs = require("fs");
 const path = require("path");
-const OpenAI = require("openai");
+const { GoogleGenAI } = require("@google/genai");
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
+const ai = new GoogleGenAI({
+  apiKey: process.env.GEMINI_API_KEY
 });
 
 let TEMP_MAILS = {};
@@ -1342,21 +1342,12 @@ bot.command("gpt", async (ctx) => {
   }
 
   try {
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4.1-mini",
-      messages: [
-  {
-    role: "system",
-    content: "Luôn trả lời bằng tiếng Việt."
-  },
-  {
-    role: "user",
-    content: prompt
-  }
-]
-    });
+    const response = await ai.models.generateContent({
+  model: "gemini-2.5-flash",
+  contents: `Luôn trả lời bằng tiếng Việt.\n\n${prompt}`
+});
 
-    ctx.reply(completion.choices[0].message.content);
+ctx.reply(response.text);
   } catch (err) {
     console.log(err);
     ctx.reply("Lỗi: " + err.message);
