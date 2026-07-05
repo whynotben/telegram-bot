@@ -1063,30 +1063,41 @@ bot.command("benoff", async (ctx) => {
 });
 
 bot.command("genmail", async (ctx) => {
+  const userId = String(ctx.from.id);
+
   const username =
     Math.random().toString(36).slice(2, 10);
 
   const email = `${username}@1secmail.com`;
 
-  TEMP_MAILS[ctx.from.id] = email;
+  if (!TEMP_MAILS[userId]) {
+    TEMP_MAILS[userId] = [];
+  }
+
+  TEMP_MAILS[userId].push(email);
+
   saveMails();
 
-  return ctx.reply(
-    `📧 Mail mới của bạn:\n\n${email}`
+  ctx.reply(
+    `📧 Đã tạo mail mới:\n\n${email}`
   );
 });
 
 bot.command("mymail", async (ctx) => {
-  const email = TEMP_MAILS[ctx.from.id];
+  const userId = String(ctx.from.id);
 
-  if (!email)
-    return ctx.reply(
-      "❌ Bạn chưa có mail. Dùng /genmail"
-    );
+  const mails = TEMP_MAILS[userId];
 
-  return ctx.reply(
-    `📧 Mail hiện tại:\n\n${email}`
-  );
+  if (!mails || mails.length === 0)
+    return ctx.reply("❌ Bạn chưa có mail.");
+
+  let text = "📧 Danh sách mail:\n\n";
+
+  mails.forEach((mail, index) => {
+    text += `${index + 1}. ${mail}\n`;
+  });
+
+  ctx.reply(text);
 });
 
 bot.command("testmail", async (ctx) => {
@@ -1094,18 +1105,30 @@ bot.command("testmail", async (ctx) => {
 });
 
 bot.command("delmail", async (ctx) => {
-  if (!TEMP_MAILS[ctx.from.id])
+  const userId = String(ctx.from.id);
+
+  const args = ctx.message.text.split(" ");
+
+  const index = parseInt(args[1]);
+
+  if (isNaN(index))
     return ctx.reply(
-      "❌ Bạn chưa có mail để xóa."
+      "❌ Dùng: /delmail <số thứ tự>"
     );
 
-  const oldMail = TEMP_MAILS[ctx.from.id];
+  const mails = TEMP_MAILS[userId];
 
-  delete TEMP_MAILS[ctx.from.id];
+  if (!mails || !mails[index - 1])
+    return ctx.reply(
+      "❌ Không tìm thấy mail."
+    );
+
+  const deleted = mails.splice(index - 1, 1)[0];
+
   saveMails();
 
-  return ctx.reply(
-    `🗑️ Đã xóa mail:\n${oldMail}`
+  ctx.reply(
+    `🗑️ Đã xóa:\n${deleted}`
   );
 });
 
