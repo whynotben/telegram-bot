@@ -4,6 +4,7 @@ const ADMIN_ID = process.env.ADMIN_ID;
 const fs = require("fs");
 const path = require("path");
 const { GoogleGenAI } = require("@google/genai");
+const axios = require("axios");
 
 const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY
