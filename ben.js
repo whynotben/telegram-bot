@@ -661,6 +661,7 @@ bot.command("menu", async (ctx) => {
 /profile - Xem hồ sơ cá nhân
 /genmail - Tạo mail ảo
 /mymail - Thư của bạn
+/delmail - Xoá mail
 
 📌 Ghim Thông Báo
 /pin - Ghim Tin Nhắn
@@ -1062,21 +1063,17 @@ bot.command("benoff", async (ctx) => {
 });
 
 bot.command("genmail", async (ctx) => {
-  try {
-    const username =
-      Math.random().toString(36).slice(2, 10);
+  const username =
+    Math.random().toString(36).slice(2, 10);
 
-    const email = `${username}@1secmail.com`;
+  const email = `${username}@1secmail.com`;
 
-    TEMP_MAILS[ctx.from.id] = email;
+  TEMP_MAILS[ctx.from.id] = email;
+  saveMails();
 
-    saveMails();
-
-    ctx.reply(`📧 ${email}`);
-  } catch (err) {
-    ctx.reply(`❌ Lỗi: ${err.message}`);
-    console.log(err);
-  }
+  return ctx.reply(
+    `📧 Mail mới của bạn:\n\n${email}`
+  );
 });
 
 bot.command("mymail", async (ctx) => {
@@ -1084,17 +1081,33 @@ bot.command("mymail", async (ctx) => {
 
   if (!email)
     return ctx.reply(
-      "❌ Bạn chưa tạo email. Dùng /genmail"
+      "❌ Bạn chưa có mail. Dùng /genmail"
     );
 
   return ctx.reply(
-    `📧 Email hiện tại:\n\n${email}`
+    `📧 Mail hiện tại:\n\n${email}`
   );
 });
 
 bot.command("testmail", async (ctx) => {
   ctx.reply("Mail OK");
 });
-  
+
+bot.command("delmail", async (ctx) => {
+  if (!TEMP_MAILS[ctx.from.id])
+    return ctx.reply(
+      "❌ Bạn chưa có mail để xóa."
+    );
+
+  const oldMail = TEMP_MAILS[ctx.from.id];
+
+  delete TEMP_MAILS[ctx.from.id];
+  saveMails();
+
+  return ctx.reply(
+    `🗑️ Đã xóa mail:\n${oldMail}`
+  );
+});
+
   bot.launch();
 })();
