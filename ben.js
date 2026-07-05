@@ -1206,13 +1206,20 @@ bot.command("setavtbox", async (ctx) => {
       "📸 Reply vào ảnh rồi dùng:\n/setavtbox"
     );
 
-  try {
-    const replyPhoto =
+  const { Input } = require("telegraf");
+
+try {
+    const photo =
         ctx.message.reply_to_message.photo.slice(-1)[0];
+
+    const file = await ctx.telegram.getFile(photo.file_id);
+
+    const photoUrl =
+        `https://api.telegram.org/file/bot${process.env.BOT_TOKEN}/${file.file_path}`;
 
     await ctx.telegram.setChatPhoto(
         ctx.chat.id,
-        replyPhoto.file_id
+        Input.fromURL(photoUrl)
     );
 
     ctx.reply("✅ Đã đổi ảnh nhóm.");
@@ -1220,7 +1227,6 @@ bot.command("setavtbox", async (ctx) => {
     console.log(e);
     ctx.reply("❌ " + e.message);
 }
-});
 
   bot.launch();
 })();
