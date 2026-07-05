@@ -1211,18 +1211,17 @@ try {
         ctx.message.reply_to_message.photo.slice(-1)[0];
 
     const https = require("https");
-const path = require("path");
-const fs = require("fs");
+    const path = require("path");
+    const fs = require("fs");
 
-    const photo =
-    ctx.message.reply_to_message.photo.slice(-1)[0];
+    const file =
+        await ctx.telegram.getFile(photo.file_id);
 
-const file = await ctx.telegram.getFile(photo.file_id);
-
-const url = "https://api.telegram.org/file/bot" +
-    process.env.BOT_TOKEN +
-    "/" +
-    file.file_path;
+    const url =
+        "https://api.telegram.org/file/bot" +
+        process.env.BOT_TOKEN +
+        "/" +
+        file.file_path;
 
 const tempFile =
     path.join(__dirname, "group-photo.jpg");
