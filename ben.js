@@ -99,8 +99,8 @@ bot.start((ctx) => {
   ctx.reply(
     "Chào mừng!",
     Markup.keyboard([
-      ["📌 ID", "👑 Admin"]
-    ]).resize()
+  ["📋 Menu", "👑 Admin"]
+]).resize()
   );
 });
 
@@ -128,8 +128,8 @@ if (!isAdmin(ctx.from.id)) {
   ctx.reply("Xin chào chủ bot.");
 });
 
-bot.hears("📌 ID", (ctx) => {
-  ctx.reply(`ID của bạn: ${ctx.from.id}`);
+bot.hears("📋 Menu", (ctx) => {
+  ctx.reply(MENU_TEXT);
 });
 
 bot.hears("👑 Admin", (ctx) => {
