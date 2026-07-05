@@ -932,39 +932,37 @@ bot.command("reo", async (ctx) => {
   if (!args[1])
     return replyAutoDelete(ctx, "❌ Dùng: /reo @username");
 
-  const target = args[1];
-
-  if (REO_RUNNING)
+  if (REO_INTERVAL)
     return replyAutoDelete(ctx, "⚠️ Đang reo rồi.");
 
-  REO_RUNNING = true;
+  const target = args[1];
 
-  while (REO_RUNNING) {
+  REO_INTERVAL = setInterval(async () => {
     try {
-      const random = REO_MESSAGES[reoIndex];
+      const msg = REO_MESSAGES[reoIndex];
 
-reoIndex++;
+      reoIndex++;
 
-if (reoIndex >= REO_MESSAGES.length) {
-  reoIndex = 0;
-}
-      await ctx.reply(`${target} ${random}`);
+      if (reoIndex >= REO_MESSAGES.length)
+        reoIndex = 0;
+
+      await ctx.reply(`${target} ${msg}`);
     } catch (e) {
-      console.log("REO ERROR:", e.message);
+      console.log(e);
     }
+  }, 2000);
 
-    await new Promise(resolve =>
-      setTimeout(resolve, 2000)
-    );
-  }
+  return replyAutoDelete(ctx, "✅ Đã bắt đầu reo.");
 });
 
 bot.command("stopreo", async (ctx) => {
-  REO_RUNNING = false;
+  if (!REO_INTERVAL)
+    return replyAutoDelete(ctx, "❌ Không có reo nào đang chạy.");
 
-  console.log("STOP REO");
+  clearInterval(REO_INTERVAL);
+  REO_INTERVAL = null;
 
-  return ctx.reply("🛑 Đã dừng reo.");
+  return replyAutoDelete(ctx, "🛑 Đã dừng reo.");
 });
 
 bot.command("report", async (ctx) => {
