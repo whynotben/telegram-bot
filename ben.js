@@ -3,6 +3,15 @@ const fs = require("fs");
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const ADMIN_ID = process.env.ADMIN_ID;
+let TEMP_MAILS = {};
+
+try {
+  TEMP_MAILS = JSON.parse(
+    fs.readFileSync("mails.json", "utf8")
+  );
+} catch {
+  TEMP_MAILS = {};
+}
 
 const START_TIME = Date.now();
 let RULES = "📜 Chưa có nội quy.";
