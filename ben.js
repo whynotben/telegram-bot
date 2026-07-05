@@ -388,10 +388,9 @@ bot.command("love", (ctx) => {
 });
 bot.command("hug", async (ctx) => {
   if (!ctx.message.reply_to_message)
-    return replyAutoDelete(ctx, "❌ Reply người cần ôm.");
+    return ctx.reply("❌ Reply người cần ôm.");
 
-  return replyAutoDelete(
-    ctx,
+  return ctx.reply(
     `🤗 ${ctx.from.first_name} ôm ${ctx.message.reply_to_message.from.first_name}`
   );
 });
