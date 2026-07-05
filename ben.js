@@ -95,12 +95,12 @@ async function replyAutoDelete(ctx, text, time = 30000) {
   }, time);
 }
 
-bot.start((ctx) => {
+bot.command("menukb", (ctx) => {
   ctx.reply(
-    "Chào mừng!",
+    "📋 Keyboard mới",
     Markup.keyboard([
-  ["📋 Menu", "👑 Admin"]
-]).resize()
+      ["📋 Menu", "👑 Admin"]
+    ]).resize()
   );
 });
 
