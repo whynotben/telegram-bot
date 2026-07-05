@@ -1210,12 +1210,12 @@ bot.command("setavtbox", async (ctx) => {
     const photo =
       ctx.message.reply_to_message.photo.pop();
 
-    const photo =
+    const replyPhoto =
   ctx.message.reply_to_message.photo.pop();
 
 await ctx.telegram.setChatPhoto(
   ctx.chat.id,
-  photo.file_id
+  replyPhoto.file_id
 );
 
 ctx.reply("✅ Đã đổi ảnh nhóm.");
