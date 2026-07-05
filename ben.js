@@ -1093,14 +1093,34 @@ ${reason}`
 bot.command("benonl", async (ctx) => {
   if (!ADMINS.includes(String(ctx.from.id))) return;
 
-  BOT_ENABLED = true;
-  ctx.reply("🟢 Bot đã bật.");
+BOT_ENABLED = true;
+
+for (const groupId of Object.keys(GROUPS)) {
+  try {
+    await ctx.telegram.sendMessage(
+      groupId,
+      "🟢 THÔNG BÁO\n\nBot đã hoạt động trở lại."
+    );
+  } catch {}
+}
+
+ctx.reply("🟢 Bot đã bật.");
 });
+
 bot.command("benoff", async (ctx) => {
   if (!ADMINS.includes(String(ctx.from.id))) return;
 
-  BOT_ENABLED = false;
-  ctx.reply("🔴 Bot đã tắt.");
+  for (const groupId of Object.keys(GROUPS)) {
+  try {
+    await ctx.telegram.sendMessage(
+      groupId,
+      "🔴 THÔNG BÁO\n\nBot đã được tắt bởi quản trị viên."
+    );
+  } catch {}
+}
+
+BOT_ENABLED = false;
+ctx.reply("🔴 Bot đã tắt.");
 });
 
 bot.command("thongbao", async (ctx) => {
