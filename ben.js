@@ -340,7 +340,7 @@ bot.command("unmute", async (ctx) => {
     return replyAutoDelete(ctx, "❌ Không thể bỏ mute.");
   }
 });
-const path = require("path");
+
 
 bot.on("new_chat_members", async (ctx) => {
   const newMembers = ctx.message.new_chat_members;
