@@ -1223,9 +1223,9 @@ bot.command("setavtbox", async (ctx) => {
 
     ctx.reply("✅ Đã đổi ảnh nhóm.");
   } catch (e) {
-    console.log(e);
-    ctx.reply("❌ Không thể đổi ảnh nhóm.");
-  }
+  console.log(e);
+  ctx.reply("❌ " + e.message);
+}
 });
 
   bot.launch();
