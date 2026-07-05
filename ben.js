@@ -87,7 +87,7 @@ function saveAdmins() {
   );
 }
 let GROUPS = {};
-let BOT_OFF = false;
+
 
 try {
   GROUPS = JSON.parse(
