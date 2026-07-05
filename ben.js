@@ -652,6 +652,8 @@ bot.command("menu", async (ctx) => {
 /checkbot - Kiểm tra trạng thái bot
 /title - Đổi danh hiệu cá nhân
 /profile - Xem hồ sơ cá nhân
+/genmail - Tạo mail ảo
+/mymail - Thư của bạn
 
 📌 Ghim Thông Báo
 /pin - Ghim Tin Nhắn
@@ -1050,6 +1052,33 @@ bot.command("benoff", async (ctx) => {
 
   BOT_ENABLED = false;
   ctx.reply("🔴 Bot đã tắt.");
+});
+
+bot.command("genmail", async (ctx) => {
+  const username =
+    Math.random().toString(36).slice(2, 10);
+
+  const email = `${username}@1secmail.com`;
+
+  TEMP_MAILS[ctx.from.id] = email;
+  saveMails();
+
+  return ctx.reply(
+    `📧 Email tạm thời của bạn:\n\n${email}`
+  );
+});
+
+bot.command("mymail", async (ctx) => {
+  const email = TEMP_MAILS[ctx.from.id];
+
+  if (!email)
+    return ctx.reply(
+      "❌ Bạn chưa tạo email. Dùng /genmail"
+    );
+
+  return ctx.reply(
+    `📧 Email hiện tại:\n\n${email}`
+  );
 });
 
   bot.launch();
