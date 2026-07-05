@@ -13,6 +13,13 @@ try {
   TEMP_MAILS = {};
 }
 
+function saveMails() {
+  fs.writeFileSync(
+    "mails.json",
+    JSON.stringify(TEMP_MAILS, null, 2)
+  );
+}
+
 const START_TIME = Date.now();
 let RULES = "📜 Chưa có nội quy.";
 
