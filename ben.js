@@ -1207,23 +1207,18 @@ bot.command("setavtbox", async (ctx) => {
     );
 
   try {
-    const photo =
-      ctx.message.reply_to_message.photo.pop();
-
     const replyPhoto =
-  ctx.message.reply_to_message.photo.pop();
+        ctx.message.reply_to_message.photo.slice(-1)[0];
 
-await ctx.telegram.setChatPhoto(
-  ctx.chat.id,
-  replyPhoto.file_id
-);
-
-ctx.reply("✅ Đã đổi ảnh nhóm.");
+    await ctx.telegram.setChatPhoto(
+        ctx.chat.id,
+        replyPhoto.file_id
+    );
 
     ctx.reply("✅ Đã đổi ảnh nhóm.");
-  } catch (e) {
-  console.log(e);
-  ctx.reply("❌ " + e.message);
+} catch (e) {
+    console.log(e);
+    ctx.reply("❌ " + e.message);
 }
 });
 
