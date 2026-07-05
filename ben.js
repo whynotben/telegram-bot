@@ -1225,7 +1225,7 @@ try {
     ctx.reply("✅ Đã đổi ảnh nhóm.");
 } catch (e) {
     console.log(e);
-    ctx.reply("❌ " + e.message);
+    ctx.reply("❌ " + e.stack);
 }
 });
   bot.launch();
