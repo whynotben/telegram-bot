@@ -1172,5 +1172,45 @@ bot.command("thongbao", async (ctx) => {
   );
 });
 
+bot.command("setname", async (ctx) => {
+  if (ctx.chat.type === "private")
+    return ctx.reply("❌ Chỉ dùng trong nhóm.");
+
+  if (!isAdmin(ctx.from.id))
+    return ctx.reply("❌ Bạn không có quyền.");
+
+  const name = ctx.message.text.replace("/setname", "").trim();
+
+  if (!name)
+    return ctx.reply("Dùng:\n/setname Tên nhóm mới");
+
+  try {
+    await ctx.telegram.setChatTitle(ctx.chat.id, name);
+    ctx.reply(`✅ Đã đổi tên nhóm thành:\n${name}`);
+  } catch {
+    ctx.reply("❌ Không thể đổi tên nhóm.");
+  }
+});
+
+bot.command("setname", async (ctx) => {
+  if (ctx.chat.type === "private")
+    return ctx.reply("❌ Chỉ dùng trong nhóm.");
+
+  if (!isAdmin(ctx.from.id))
+    return ctx.reply("❌ Bạn không có quyền.");
+
+  const name = ctx.message.text.replace("/setname", "").trim();
+
+  if (!name)
+    return ctx.reply("Dùng:\n/setname Tên nhóm mới");
+
+  try {
+    await ctx.telegram.setChatTitle(ctx.chat.id, name);
+    ctx.reply(`✅ Đã đổi tên nhóm thành:\n${name}`);
+  } catch {
+    ctx.reply("❌ Không thể đổi tên nhóm.");
+  }
+});
+
   bot.launch();
 })();
