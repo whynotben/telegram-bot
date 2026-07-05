@@ -7,6 +7,22 @@ const ADMIN_ID = process.env.ADMIN_ID;
 const START_TIME = Date.now();
 let RULES = "📜 Chưa có nội quy.";
 
+let BOT_ENABLED = true;
+bot.use(async (ctx, next) => {
+  if (!BOT_ENABLED) {
+    if (
+      ctx.message?.text === "/benonl" &&
+      ADMINS.includes(String(ctx.from.id))
+    ) {
+      return next();
+    }
+
+    return;
+  }
+
+  return next();
+});
+
 const REO_MESSAGES = [
   "sủa đi thằng ngu!",
   "🤣 sao hấp hối r e!",
@@ -1008,6 +1024,19 @@ ${reason}`
     ctx,
     "✅ Đã gửi report tới admin."
   );
+});
+
+bot.command("benonl", async (ctx) => {
+  if (!ADMINS.includes(String(ctx.from.id))) return;
+
+  BOT_ENABLED = true;
+  ctx.reply("🟢 Bot đã bật.");
+});
+bot.command("benoff", async (ctx) => {
+  if (!ADMINS.includes(String(ctx.from.id))) return;
+
+  BOT_ENABLED = false;
+  ctx.reply("🔴 Bot đã tắt.");
 });
 
   bot.launch();
