@@ -1347,7 +1347,7 @@ bot.command("gpt", async (ctx) => {
   contents: `Luôn trả lời bằng tiếng Việt.\n\n${prompt}`
 });
 
-ctx.reply(response.text);
+await ctx.reply(response.text);
   } catch (err) {
     console.log(err);
     ctx.reply("Lỗi: " + err.message);
