@@ -110,6 +110,22 @@ function isAdmin(id) {
 
 let FB_UIDS = {};
 
+let SCAMS = {};
+
+try {
+  SCAMS = JSON.parse(
+    fs.readFileSync("scams.json", "utf8")
+  );
+} catch {
+  SCAMS = {};
+}
+
+function saveScams() {
+  fs.writeFileSync(
+    "scams.json",
+    JSON.stringify(SCAMS, null, 2)
+  );
+}
 try {
   FB_UIDS = JSON.parse(fs.readFileSync("uids.json", "utf8"));
 } catch {}
@@ -692,6 +708,8 @@ bot.command("menu", async (ctx) => {
 /warnings - Xem cảnh cáo
 /resetwarn - Xóa cảnh cáo
 /report - Báo Cáo 
+/checkscam - Kiểm tra scam
+/reportscam - Báo cáo scam
 
 📊 Tiện ích
 /stats - Xem thống kê bot
@@ -1104,6 +1122,60 @@ ${reason}`
     ctx,
     "✅ Đã gửi report tới admin."
   );
+});
+
+bot.command("reportscam", async (ctx) => {
+  const text = ctx.message.text
+    .replace("/reportscam", "")
+    .trim();
+
+  if (!text.includes("|"))
+    return ctx.reply(
+      "Dùng:\n/reportscam thông_tin|lý_do"
+    );
+
+  const [target, reason] = text.split("|");
+
+  if (!SCAMS[target])
+    SCAMS[target] = [];
+
+  SCAMS[target].push({
+    by: ctx.from.id,
+    reason: reason.trim(),
+    time: Date.now()
+  });
+
+  saveScams();
+
+  ctx.reply("✅ Đã ghi nhận tố cáo.");
+});
+
+bot.command("checkscam", async (ctx) => {
+  const target = ctx.message.text
+    .replace("/checkscam", "")
+    .trim();
+
+  if (!target)
+    return ctx.reply(
+      "Dùng:\n/checkscam sdt_stk_uid"
+    );
+
+  const reports = SCAMS[target];
+
+  if (!reports || reports.length === 0)
+    return ctx.reply(
+      "✅ Không có báo cáo nào."
+    );
+
+  let text =
+    `⚠️ ${target}\n` +
+    `📊 Số tố cáo: ${reports.length}\n\n`;
+
+  reports.slice(0, 5).forEach((r, i) => {
+    text += `${i + 1}. ${r.reason}\n`;
+  });
+
+  ctx.reply(text);
 });
 
 bot.command("benonl", async (ctx) => {
