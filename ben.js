@@ -1,6 +1,8 @@
 const { Telegraf, Markup } = require("telegraf");
 const fs = require("fs");
 
+const axios = require("axios");
+
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const ADMIN_ID = process.env.ADMIN_ID;
 let TEMP_MAILS = {};
