@@ -3,12 +3,8 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 const ADMIN_ID = process.env.ADMIN_ID;
 const fs = require("fs");
 const path = require("path");
-const { GoogleGenAI } = require("@google/genai");
 const axios = require("axios");
 
-const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY
-});
 
 let TEMP_MAILS = {};
 
@@ -729,7 +725,7 @@ bot.command("menu", async (ctx) => {
 /checkbot - Kiểm tra trạng thái bot
 /title - Đổi danh hiệu cá nhân
 /profile - Xem hồ sơ cá nhân
-/Gpt - Trợ lý AI
+
 📌 Ghim Thông Báo
 /pin - Ghim Tin Nhắn
 /unpin - Bỏ Ghim Tin Nhắn
@@ -1332,29 +1328,6 @@ ctx.reply("✅ Đã đổi ảnh nhóm.");
 } catch (e) {
     console.log(e);
     ctx.reply("❌ " + e.stack);
-}
-});
-
-bot.command("gpt", async (ctx) => {
-  const prompt = ctx.message.text.replace("/gpt", "").trim();
-
-  if (!prompt) {
-    return ctx.reply("Nhập nội dung sau /gpt");
-  }
-
-  try {
-    throw new Error("TEST GEMINI");
-    
-    const response = await ai.models.generateContent({
-  model: "gemini-2.5-flash",
-  contents: `Luôn trả lời bằng tiếng Việt.\n\n${prompt}`
-});
-
-await ctx.reply(response.text);
-  } catch (err) {
-  console.log(err);
-  console.log(err.stack);
-  await ctx.reply(JSON.stringify(err, null, 2));
 }
 });
 
