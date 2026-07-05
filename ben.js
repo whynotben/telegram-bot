@@ -1349,9 +1349,10 @@ bot.command("gpt", async (ctx) => {
 
 await ctx.reply(response.text);
   } catch (err) {
-    console.log(err);
-    ctx.reply("Lỗi: " + err.message);
-  }
+  console.log(err);
+  console.log(err.stack);
+  await ctx.reply(JSON.stringify(err, null, 2));
+}
 });
 
   bot.launch();
