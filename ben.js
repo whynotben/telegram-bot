@@ -1206,7 +1206,7 @@ bot.command("setavtbox", async (ctx) => {
       "📸 Reply vào ảnh rồi dùng:\n/setavtbox"
     );
 
-  const { Input } = require("telegraf");
+  
 
 try {
     const photo =
@@ -1227,6 +1227,6 @@ try {
     console.log(e);
     ctx.reply("❌ " + e.message);
 }
-
+});
   bot.launch();
 })();
