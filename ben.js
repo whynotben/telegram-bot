@@ -36,7 +36,11 @@ const REO_MESSAGES = [
   "chậm ‌vậy ‌sao ‌cứu ‌được ‌con ‌đĩ ‌mẹ ‌mày ‌nhanh ‌lên ‌đi ‌chứ ‌=))",
   "nghèo k có nghi lực à =))‌",
   "thằng bê đê bất lực vì mẹ nó bị đụ tung cái lồn =))",
-  "nghèo k có nghi lực à =))‌",
+  "Gõ sồn máu lồn mày lên =))‍",
+  "Cay ​cú ​anh ​trong ​lòng ​mà ​không ​làm ​đc ​gì ​=))"
+  "⁠bem với cha phải banh đầu óc chó ra đáp lại nghe chưa =))?"
+  "sao mày lề mề dị con =))"
+  "ko cảm hứng để hăng à =))"
 ];
 
 let REO_INTERVAL = null;
