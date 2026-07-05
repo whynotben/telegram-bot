@@ -1334,7 +1334,7 @@ ctx.reply("✅ Đã đổi ảnh nhóm.");
 const axios = require("axios");
 
 bot.command("weather", async (ctx) => {
-    const city = ctx.message.text.replace("/weather", "").trim();
+    console.log("weather command chạy");
 
     if (!city) {
         return ctx.reply("Ví dụ: /weather Hanoi");
