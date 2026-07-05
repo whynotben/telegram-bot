@@ -5,6 +5,7 @@ const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
 
+console.log("TEST_1955");
 
 let TEMP_MAILS = {};
 
