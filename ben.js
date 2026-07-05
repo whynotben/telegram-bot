@@ -64,6 +64,8 @@ let reoIndex = 0;
 
 let LINK_LOCK = false;
 
+let BOT_OFF = false;
+
 let ADMINS = [];
 
 try {
