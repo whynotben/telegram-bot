@@ -87,6 +87,7 @@ function saveAdmins() {
   );
 }
 let GROUPS = {};
+let BOT_OFF = false;
 
 try {
   GROUPS = JSON.parse(
@@ -161,6 +162,17 @@ bot.on("message", async (ctx, next) => {
   }
 
   return next();
+});
+
+bot.use(async (ctx, next) => {
+  if (
+    BOT_OFF &&
+    ctx.chat.type !== "private"
+  ) {
+    return;
+  }
+
+  await next();
 });
 
 bot.command("menukb", (ctx) => {
