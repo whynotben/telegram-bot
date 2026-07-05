@@ -728,7 +728,7 @@ bot.command("menu", async (ctx) => {
 /checkbot - Kiểm tra trạng thái bot
 /title - Đổi danh hiệu cá nhân
 /profile - Xem hồ sơ cá nhân
-/chat - Gpt
+/Gpt - Trợ lý AI
 📌 Ghim Thông Báo
 /pin - Ghim Tin Nhắn
 /unpin - Bỏ Ghim Tin Nhắn
@@ -1345,8 +1345,15 @@ bot.command("gpt", async (ctx) => {
     const completion = await openai.chat.completions.create({
       model: "gpt-4.1-mini",
       messages: [
-        { role: "user", content: prompt }
-      ]
+  {
+    role: "system",
+    content: "Luôn trả lời bằng tiếng Việt."
+  },
+  {
+    role: "user",
+    content: prompt
+  }
+]
     });
 
     ctx.reply(completion.choices[0].message.content);
