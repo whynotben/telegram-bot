@@ -685,6 +685,8 @@ bot.command("menu", async (ctx) => {
 /lock - Khóa chat
 /unlock - Mở chat
 /clear - Xóa chat
+/setname - Đổi tên nhóm
+/setavt - Đổi ảnh nhóm
 
 ⚠️ Báo Cáo
 /warn - Cảnh cáo
