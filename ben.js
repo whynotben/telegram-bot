@@ -685,8 +685,8 @@ bot.command("menu", async (ctx) => {
 /lock - Khóa chat
 /unlock - Mở chat
 /clear - Xóa chat
-/setname - Đổi tên nhóm
-/setavt - Đổi ảnh nhóm
+/setnamebox - Đổi tên nhóm
+/setavtbox - Đổi ảnh nhóm
 
 ⚠️ Báo Cáo
 /warn - Cảnh cáo
@@ -1174,17 +1174,17 @@ bot.command("thongbao", async (ctx) => {
   );
 });
 
-bot.command("setname", async (ctx) => {
+bot.command("setnamebox", async (ctx) => {
   if (ctx.chat.type === "private")
     return ctx.reply("❌ Chỉ dùng trong nhóm.");
 
   if (!isAdmin(ctx.from.id))
     return ctx.reply("❌ Bạn không có quyền.");
 
-  const name = ctx.message.text.replace("/setname", "").trim();
+  const name = ctx.message.text.replace("/setnamebox", "").trim();
 
   if (!name)
-    return ctx.reply("Dùng:\n/setname Tên nhóm mới");
+    return ctx.reply("Dùng:\n/setnamebox Tên nhóm mới");
 
   try {
     await ctx.telegram.setChatTitle(ctx.chat.id, name);
@@ -1194,23 +1194,37 @@ bot.command("setname", async (ctx) => {
   }
 });
 
-bot.command("setname", async (ctx) => {
+bot.command("setavtbox", async (ctx) => {
   if (ctx.chat.type === "private")
     return ctx.reply("❌ Chỉ dùng trong nhóm.");
 
   if (!isAdmin(ctx.from.id))
     return ctx.reply("❌ Bạn không có quyền.");
 
-  const name = ctx.message.text.replace("/setname", "").trim();
-
-  if (!name)
-    return ctx.reply("Dùng:\n/setname Tên nhóm mới");
+  if (!ctx.message.reply_to_message?.photo)
+    return ctx.reply(
+      "📸 Reply vào ảnh rồi dùng:\n/setavtbox"
+    );
 
   try {
-    await ctx.telegram.setChatTitle(ctx.chat.id, name);
-    ctx.reply(`✅ Đã đổi tên nhóm thành:\n${name}`);
-  } catch {
-    ctx.reply("❌ Không thể đổi tên nhóm.");
+    const photo =
+      ctx.message.reply_to_message.photo.pop();
+
+    const file = await ctx.telegram.getFile(
+      photo.file_id
+    );
+
+    await ctx.telegram.setChatPhoto(
+      ctx.chat.id,
+      {
+        url: `https://api.telegram.org/file/bot${BOT_TOKEN}/${file.file_path}`
+      }
+    );
+
+    ctx.reply("✅ Đã đổi ảnh nhóm.");
+  } catch (e) {
+    console.log(e);
+    ctx.reply("❌ Không thể đổi ảnh nhóm.");
   }
 });
 
