@@ -1089,5 +1089,39 @@ bot.command("benoff", async (ctx) => {
   ctx.reply("🔴 Bot đã tắt.");
 });
 
+bot.command("thongbao", async (ctx) => {
+  if (ctx.chat.type !== "private") {
+    return ctx.reply("❌ Chỉ dùng trong chat riêng với bot.");
+  }
+
+  if (!isAdmin(ctx.from.id)) {
+    return ctx.reply("❌ Bạn không có quyền.");
+  }
+
+  const text = ctx.message.text.replace("/thongbao", "").trim();
+
+  if (!text) {
+    return ctx.reply(
+      "Dùng:\n/thongbao Nội dung cần gửi"
+    );
+  }
+
+  let sent = 0;
+
+  for (const groupId of Object.keys(GROUPS)) {
+    try {
+      await ctx.telegram.sendMessage(
+        groupId,
+        `📢 THÔNG BÁO\n\n${text}`
+      );
+      sent++;
+    } catch {}
+  }
+
+  ctx.reply(
+    `✅ Đã gửi tới ${sent} nhóm`
+  );
+});
+
   bot.launch();
 })();
