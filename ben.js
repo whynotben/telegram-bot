@@ -4,6 +4,11 @@ const ADMIN_ID = process.env.ADMIN_ID;
 const fs = require("fs");
 const path = require("path");
 const OpenAI = require("openai");
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
+
 let TEMP_MAILS = {};
 
 try {
@@ -723,7 +728,7 @@ bot.command("menu", async (ctx) => {
 /checkbot - Kiểm tra trạng thái bot
 /title - Đổi danh hiệu cá nhân
 /profile - Xem hồ sơ cá nhân
-
+/chat - Gpt
 📌 Ghim Thông Báo
 /pin - Ghim Tin Nhắn
 /unpin - Bỏ Ghim Tin Nhắn
@@ -1328,5 +1333,28 @@ ctx.reply("✅ Đã đổi ảnh nhóm.");
     ctx.reply("❌ " + e.stack);
 }
 });
+
+bot.command("gpt", async (ctx) => {
+  const prompt = ctx.message.text.replace("/gpt", "").trim();
+
+  if (!prompt) {
+    return ctx.reply("Nhập nội dung sau /gpt");
+  }
+
+  try {
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4.1-mini",
+      messages: [
+        { role: "user", content: prompt }
+      ]
+    });
+
+    ctx.reply(completion.choices[0].message.content);
+  } catch (err) {
+    console.log(err);
+    ctx.reply("Lỗi: " + err.message);
+  }
+});
+
   bot.launch();
 })();
