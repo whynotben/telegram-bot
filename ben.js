@@ -128,8 +128,11 @@ if (!isAdmin(ctx.from.id)) {
   ctx.reply("Xin chào chủ bot.");
 });
 
-bot.hears("📋 Menu", (ctx) => {
-  ctx.reply(MENU_TEXT);
+bot.hears("📋 Menu", async (ctx) => {
+  return ctx.telegram.sendMessage(
+    ctx.chat.id,
+    MENU_TEXT
+  );
 });
 
 bot.hears("👑 Admin", (ctx) => {
