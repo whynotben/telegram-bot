@@ -1342,6 +1342,8 @@ bot.command("gpt", async (ctx) => {
   }
 
   try {
+    console.log("GEMINI BUILD TEST");
+    
     const response = await ai.models.generateContent({
   model: "gemini-2.5-flash",
   contents: `Luôn trả lời bằng tiếng Việt.\n\n${prompt}`
