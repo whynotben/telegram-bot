@@ -23,7 +23,7 @@ const REO_MESSAGES = [
   "nghèo k có nghi lực à =))‌",
 ];
 
-let REO_RUNNING = false;
+let REO_INTERVAL = null;
 let reoIndex = 0;
 
 let LINK_LOCK = false;
