@@ -1081,5 +1081,9 @@ bot.command("mymail", async (ctx) => {
   );
 });
 
+bot.command("testmail", async (ctx) => {
+  ctx.reply("Mail OK");
+});
+  
   bot.launch();
 })();
