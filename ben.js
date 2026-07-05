@@ -1342,7 +1342,7 @@ bot.command("gpt", async (ctx) => {
   }
 
   try {
-    console.log("GEMINI BUILD TEST");
+    throw new Error("TEST GEMINI");
     
     const response = await ai.models.generateContent({
   model: "gemini-2.5-flash",
