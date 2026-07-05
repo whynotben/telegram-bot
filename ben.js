@@ -1,6 +1,7 @@
 const { Telegraf, Markup, Input } = require("telegraf");
 const fs = require("fs");
-
+const https = require("https");
+const path = require("path");
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const ADMIN_ID = process.env.ADMIN_ID;
 let TEMP_MAILS = {};
@@ -1212,17 +1213,46 @@ try {
     const photo =
         ctx.message.reply_to_message.photo.slice(-1)[0];
 
-    const file = await ctx.telegram.getFile(photo.file_id);
+    const https = require("https");
+const path = require("path");
+const fs = require("fs");
 
-    const photoUrl =
-        `https://api.telegram.org/file/bot${process.env.BOT_TOKEN}/${file.file_path}`;
+    const photo =
+    ctx.message.reply_to_message.photo.slice(-1)[0];
 
-    await ctx.telegram.setChatPhoto(
-        ctx.chat.id,
-        Input.fromURL(photoUrl)
-    );
+const file = await ctx.telegram.getFile(photo.file_id);
 
-    ctx.reply("✅ Đã đổi ảnh nhóm.");
+const url = "https://api.telegram.org/file/bot" +
+    process.env.BOT_TOKEN +
+    "/" +
+    file.file_path;
+
+const tempFile =
+    path.join(__dirname, "group-photo.jpg");
+
+await new Promise((resolve, reject) => {
+    const stream = fs.createWriteStream(tempFile);
+
+    https.get(url, (res) => {
+        res.pipe(stream);
+
+        stream.on("finish", () => {
+            stream.close(resolve);
+        });
+    }).on("error", reject);
+});
+
+await ctx.telegram.setChatPhoto(
+    ctx.chat.id,
+    { source: tempFile }
+);
+
+fs.unlinkSync(tempFile);
+
+ctx.reply("✅ Đã đổi ảnh nhóm.");
+  
+
+    
 } catch (e) {
     console.log(e);
     ctx.reply("❌ " + e.stack);
